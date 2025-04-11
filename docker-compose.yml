@@ -1,0 +1,33 @@
+services:
+  postgres:
+    container_name: postgres-sql-tsmp
+    image: postgres
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: tool_share_management_platform
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - 5432:5432
+    networks:
+      - tool-share-platform
+    restart: unless-stopped
+
+  mail-dev:
+    container_name: mail-dev-tsmp
+    image: maildev/maildev
+    ports:
+      - 1080:1080
+      - 1025:1025
+
+networks:
+  tool-share-platform:
+    driver: bridge
+
+volumes:
+  postgres:
+    driver: local
+
+
