@@ -1,6 +1,8 @@
 package com.ferrara.tool.user;
 
 import com.ferrara.tool.role.Role;
+import com.ferrara.tool.token.ToolTransactionHistory;
+import com.ferrara.tool.tool.Tool;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -39,10 +41,6 @@ public class User implements UserDetails, Principal {
     private boolean accountLocked;
     private boolean enabled;
 
-    //will be mapped by Role classes
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Role> roles;
-
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -50,6 +48,17 @@ public class User implements UserDetails, Principal {
     @LastModifiedDate
     @Column(insertable = false)
     private LocalDateTime lastModifiedDate;
+
+    //will be mapped by Role classes
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Role> roles;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Tool> tools;
+
+    @OneToMany(mappedBy = "userId")
+    private List<ToolTransactionHistory> transactionHistories;
+
 
     public String fullName() {
         return firstName + " " + lastName;
