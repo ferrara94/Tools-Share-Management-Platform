@@ -35,7 +35,7 @@ public class EmailService {
         if (emailTemplateName == null) {
             templateName = "confirm-email"; //fallback
         } else {
-            templateName = emailTemplateName.name();
+            templateName = emailTemplateName.name().toLowerCase();
         }
 
         //CONFIGURE EMAIL SENDER
