@@ -10,21 +10,24 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
-@EnableJpaAuditing
+@EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @EnableAsync
 public class ToolSharingApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ToolSharingApiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ToolSharingApiApplication.class, args);
+    }
 
-	/*@Bean
+	/*
+	It is needed only the first time
+	@Bean
 	public CommandLineRunner runner(RoleRepository roleRepository) {
 		return args -> {
 			if (roleRepository.findByName("USER").isEmpty()) {
 				roleRepository.save(Role.builder().name("USER").build());
 			}
 		};
-	}*/
+	}
+	*/
 
 }
