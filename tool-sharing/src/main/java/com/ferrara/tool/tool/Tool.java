@@ -1,7 +1,7 @@
 package com.ferrara.tool.tool;
 
 import com.ferrara.tool.feedback.Feedback;
-import com.ferrara.tool.token.ToolTransactionHistory;
+import com.ferrara.tool.history.ToolTransactionHistory;
 import com.ferrara.tool.user.User;
 import com.ferrara.tool.utils.common.BaseEntity;
 import jakarta.persistence.*;
@@ -38,5 +38,18 @@ public class Tool extends BaseEntity {
 
     @OneToMany(mappedBy = "toolId")
     private List<ToolTransactionHistory> transactionHistories;
+
+    @Transient
+    public double getRate(){
+        if(feedbacks == null || feedbacks.isEmpty()) {
+            return 0.0;
+        }
+        var rate = this.feedbacks.stream()
+                .mapToDouble(Feedback::getStars)
+                .average()
+                .orElse(0.0);
+
+        return Math.round(rate*10.0)/10.0;
+    }
 
 }

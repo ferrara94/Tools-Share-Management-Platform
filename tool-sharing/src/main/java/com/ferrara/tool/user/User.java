@@ -1,7 +1,7 @@
 package com.ferrara.tool.user;
 
 import com.ferrara.tool.role.Role;
-import com.ferrara.tool.token.ToolTransactionHistory;
+import com.ferrara.tool.history.ToolTransactionHistory;
 import com.ferrara.tool.tool.Tool;
 import jakarta.persistence.*;
 import lombok.*;
