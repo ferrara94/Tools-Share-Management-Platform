@@ -17,5 +17,5 @@ public interface ToolRepository extends JpaRepository<Tool, Integer>, JpaSpecifi
             AND tool.available = true
             AND tool.owner.id != :userId
           """)
-    Page<Tool> findAllAvailableBooks(Pageable pageable, Integer userId);
+    Page<Tool> findAllAvailableTools(Pageable pageable, Integer userId);
 }

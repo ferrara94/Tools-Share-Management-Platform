@@ -26,6 +26,7 @@ public class Tool extends BaseEntity {
     private String description;
     private String condition;
     private String category;
+    private String toolPicture; //file path
     private boolean available;
     private boolean archived;
 

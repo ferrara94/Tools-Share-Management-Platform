@@ -1,5 +1,6 @@
 package com.ferrara.tool.tool;
 
+import com.ferrara.tool.file.FileUtils;
 import com.ferrara.tool.history.ToolTransactionHistory;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class ToolMapper {
                 .archived(tool.isArchived())
                 .rate(tool.getRate())
                 .owner(tool.getOwner().fullName())
+                .picture(FileUtils.readFileFromLocation(tool.getToolPicture()))
                 .build();
     }
 

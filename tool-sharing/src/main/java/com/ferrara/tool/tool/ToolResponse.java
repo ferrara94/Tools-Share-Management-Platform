@@ -20,7 +20,7 @@ public class ToolResponse {
 
     private String owner;
 
-    private byte[] cover; // picture of the tool
+    private byte[] picture; // picture of the tool
     private double rate; // avarage of the tool
 
 }

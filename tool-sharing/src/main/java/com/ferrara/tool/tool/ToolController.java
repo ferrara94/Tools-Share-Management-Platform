@@ -1,12 +1,14 @@
 package com.ferrara.tool.tool;
 
 import com.ferrara.tool.utils.common.PageResponse;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("tools")
@@ -79,6 +81,43 @@ public class ToolController {
             Authentication connectedUser
     ){
         return ResponseEntity.ok(service.updateArchivedStatus(toolId, connectedUser));
+    }
+
+    @PostMapping("/borrow/{tool-id}")
+    public ResponseEntity<Integer> borrowTool (
+            @PathVariable("tool-id") Integer toolId,
+            Authentication connectedUser
+    ) {
+        return ResponseEntity.ok(service.borrowTool(toolId, connectedUser));
+    }
+
+    @PatchMapping("/borrow/return/{tool-id}")
+    public ResponseEntity<Integer> returnBorrowedTool(
+            @PathVariable("tool-id") Integer toolId,
+            Authentication connectedUser
+    ){
+        return ResponseEntity.ok(service.returnBorrowedTool(toolId, connectedUser));
+
+    }
+
+    @PatchMapping("/borrow/return/approve/{tool-id}")
+    public ResponseEntity<Integer> approveReturnBorrowedTool(
+            @PathVariable("tool-id") Integer toolId,
+            Authentication connectedUser
+    ){
+        return ResponseEntity.ok(service.approveReturnBorrowedTool(toolId, connectedUser));
+
+    }
+
+    @PostMapping(value = "/picture/{tool-id}", consumes = "multipart/form-data")
+    public ResponseEntity<?> uploadToolPicture(
+            @PathVariable("tool-id") Integer toolId,
+            @Parameter()
+            @RequestPart("file")MultipartFile file,
+            Authentication connectedUser
+    ){
+        service.uploadToolPicture(file, connectedUser, toolId);
+        return ResponseEntity.accepted().build();
     }
 
 

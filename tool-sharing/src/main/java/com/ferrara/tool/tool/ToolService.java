@@ -1,6 +1,7 @@
 package com.ferrara.tool.tool;
 
 import com.ferrara.tool.exception.OperationNotPermittedException;
+import com.ferrara.tool.file.FileStorageService;
 import com.ferrara.tool.history.ToolTransactionHistory;
 import com.ferrara.tool.history.ToolTransactionHistoryRepository;
 import com.ferrara.tool.user.User;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +26,8 @@ public class ToolService {
     private final ToolMapper toolMapper;
     private final ToolRepository repository;
     private final ToolTransactionHistoryRepository transactionHistoryRepository;
+
+    private final FileStorageService fileStorageService;
 
 
     public Integer save(ToolRequest request, Authentication connectedUser) {
@@ -42,7 +46,7 @@ public class ToolService {
     public PageResponse<ToolResponse> findAllTools(int page, int size, Authentication connectedUser) {
         User user = (User) connectedUser.getPrincipal();
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-        Page<Tool> tools = repository.findAllAvailableBooks(pageable, user.getId());
+        Page<Tool> tools = repository.findAllAvailableTools(pageable, user.getId());
         List<ToolResponse> response = tools.stream()
                 .map(toolMapper::toToolResponse)
                 .toList();
@@ -99,11 +103,11 @@ public class ToolService {
 
     public Integer updateAvailableStatus(Integer toolId, Authentication connectedUser) {
         Tool tool = repository.findById(toolId)
-                .orElseThrow(() -> new EntityNotFoundException("NO TOOL FOUND WITH ID: "+toolId));
+                .orElseThrow(() -> new EntityNotFoundException("NO TOOL FOUND WITH ID: " + toolId));
 
         //only owner of the tool, can update the tool
         User user = (User) connectedUser.getPrincipal();
-        if(!Objects.equals(tool.getOwner().getId(), user.getId())) {
+        if (!Objects.equals(tool.getOwner().getId(), user.getId())) {
             throw new OperationNotPermittedException("YOU CANNOT UPDATE TOOL AVAILABLE STATUS");
         }
         tool.setAvailable(!tool.isAvailable());
@@ -113,15 +117,91 @@ public class ToolService {
 
     public Integer updateArchivedStatus(Integer toolId, Authentication connectedUser) {
         Tool tool = repository.findById(toolId)
-                .orElseThrow(() -> new EntityNotFoundException("NO TOOL FOUND WITH ID: "+toolId));
+                .orElseThrow(() -> new EntityNotFoundException("NO TOOL FOUND WITH ID: " + toolId));
 
         //only owner of the tool, can update the tool
         User user = (User) connectedUser.getPrincipal();
-        if(!Objects.equals(tool.getOwner().getId(), user.getId())) {
+        if (!Objects.equals(tool.getOwner().getId(), user.getId())) {
             throw new OperationNotPermittedException("YOU CANNOT UPDATE TOOL ARCHIVED STATUS");
         }
         tool.setAvailable(!tool.isArchived());
         repository.save(tool);
         return toolId;
+    }
+
+    public Integer borrowTool(Integer toolId, Authentication connectedUser) {
+        Tool tool = repository.findById(toolId)
+                .orElseThrow(() -> new EntityNotFoundException("NO TOOL FOUND WITH THE ID: " + toolId));
+        if (tool.isArchived() || !tool.isAvailable()) {
+            throw new OperationNotPermittedException("THE REQUESTED TOOL CANNOT BE BORROWED SINCE IT IS NOT AVAILABLE OR IS ARCHIVED");
+        }
+        User user = (User) connectedUser.getPrincipal();
+
+        //avoid the owner borrowing its tool
+        if (Objects.equals(tool.getOwner().getId(), user.getId())) {
+            throw new OperationNotPermittedException("YOU CANNOT BORROW YOUR OWN TOOL ");
+        }
+
+        final boolean isAlreadyBorrowed = transactionHistoryRepository.isAlreadyBorrowedByUser(toolId, user.getId());
+        if (isAlreadyBorrowed) {
+            throw new OperationNotPermittedException("THE TOOL YOU REQUESTED IS ALREADY BORROWED");
+        }
+
+        ToolTransactionHistory toolTransactionHistory = ToolTransactionHistory.builder()
+                .userId(user)
+                .toolId(tool)
+                .returned(false)
+                .returnApproved(false)
+                .build();
+
+        return transactionHistoryRepository.save(toolTransactionHistory).getId();
+    }
+
+    public Integer returnBorrowedTool(Integer toolId, Authentication connectedUser) {
+        Tool tool = repository.findById(toolId)
+                .orElseThrow(() -> new EntityNotFoundException("NO TOOL FOUND WITH THE ID: " + toolId));
+        if (tool.isArchived() || !tool.isAvailable()) {
+            throw new OperationNotPermittedException("THE REQUESTED TOOL CANNOT BE BORROWED SINCE IT IS NOT AVAILABLE OR IS ARCHIVED");
+        }
+        User user = (User) connectedUser.getPrincipal();
+        //avoid the owner returning its tool
+        if (Objects.equals(tool.getOwner().getId(), user.getId())) {
+            throw new OperationNotPermittedException("YOU CANNOT RETURN YOUR OWN TOOL SINCE YOU DIDN'T BORROW IT ");
+        }
+        ToolTransactionHistory toolTransactionHistory = transactionHistoryRepository.findByToolIdAndUserId(toolId, user.getId())
+                .orElseThrow(() -> new OperationNotPermittedException("YOU DIDN'T BORROW THIS TOOL"));
+        toolTransactionHistory.setReturned(true);
+        return transactionHistoryRepository.save(toolTransactionHistory).getId();
+    }
+
+    public Integer approveReturnBorrowedTool(Integer toolId, Authentication connectedUser) {
+        Tool tool = repository.findById(toolId)
+                .orElseThrow(() -> new EntityNotFoundException("NO TOOL FOUND WITH THE ID: " + toolId));
+        if (tool.isArchived() || !tool.isAvailable()) {
+            throw new OperationNotPermittedException("THE REQUESTED TOOL CANNOT BE BORROWED SINCE IT IS NOT AVAILABLE OR IS ARCHIVED");
+        }
+        User user = (User) connectedUser.getPrincipal();
+        //avoid the owner approving the return of its tool
+        if (Objects.equals(tool.getOwner().getId(), user.getId())) {
+            throw new OperationNotPermittedException("YOU CANNOT APPROVE THE RETURN OF YOUR OWN TOOL SINCE YOU COULDN'T BORROW IT ");
+        }
+
+        //CHECK IF THE TOOL RETURNED IS OWNED BY THE USER (SO BY THE OWNER)
+        ToolTransactionHistory toolTransactionHistory = transactionHistoryRepository.findByToolIdAndOwnerId(toolId, user.getId())
+                .orElseThrow(() -> new OperationNotPermittedException("YOU CANNOT APPROVE THIS TOOL RETURN"));
+
+        toolTransactionHistory.setReturnApproved(true);
+
+        return transactionHistoryRepository.save(toolTransactionHistory).getId();
+    }
+
+    public void uploadToolPicture(MultipartFile file, Authentication connectedUser, Integer toolId) {
+        Tool tool = repository.findById(toolId)
+                .orElseThrow(() -> new EntityNotFoundException("NO TOOL FOUND WITH THE ID: " + toolId));
+        User user = (User) connectedUser.getPrincipal();
+
+        var toolPicture = fileStorageService.saveFile(file, user.getId());
+        tool.setToolPicture(toolPicture);
+        repository.save(tool);
     }
 }
