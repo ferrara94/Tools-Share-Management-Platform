@@ -1,0 +1,10 @@
+i {
+    cursor: pointer;
+}
+
+div {
+    &.card {
+        max-height: 400px;;
+        min-height: 400px;
+    }
+}

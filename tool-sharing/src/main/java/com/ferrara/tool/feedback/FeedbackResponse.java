@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class FeedbackResponse {
-    private Integer starts;
+    private Integer stars;
     private String comment;
     private boolean ownFeedback;
 }

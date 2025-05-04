@@ -24,7 +24,7 @@ public class FeedbackMapper {
 
     public FeedbackResponse toFeedbackResponse(Feedback feedback, Integer currentUserId) {
         return FeedbackResponse.builder()
-                .starts(feedback.getStars())
+                .stars(feedback.getStars())
                 .comment(feedback.getComment())
                 .ownFeedback(Objects.equals(feedback.getCreatedBy(),currentUserId))
                 .build();

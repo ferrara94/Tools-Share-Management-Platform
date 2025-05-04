@@ -1,6 +1,7 @@
 package com.ferrara.tool.handler;
 
 import com.ferrara.tool.exception.OperationNotPermittedException;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +44,8 @@ public class GlobalExceptionHandler {
                 );
     }
 
+
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ExceptionResponse> handleException(BadCredentialsException exp) {
         return ResponseEntity
@@ -51,6 +54,19 @@ public class GlobalExceptionHandler {
                         ExceptionResponse.builder()
                                 .businessErrorCode(BusinessErrorCodes.BAD_CREDENTIALS.getCode())
                                 .businessErrorDescription(BusinessErrorCodes.BAD_CREDENTIALS.getDescription())
+                                .error(exp.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<ExceptionResponse> handleException(ExpiredJwtException exp) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(
+                        ExceptionResponse.builder()
+                                .businessErrorCode(BusinessErrorCodes.TOKEN_EXPIRED.getCode())
+                                .businessErrorDescription(BusinessErrorCodes.TOKEN_EXPIRED.getDescription())
                                 .error(exp.getMessage())
                                 .build()
                 );

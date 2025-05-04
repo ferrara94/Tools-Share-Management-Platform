@@ -1,0 +1,99 @@
+<div class="p-2">
+  <h2>Manage Tool</h2>
+  <hr />
+  <div class="alert alert-danger mt-2" role="alert" *ngIf="errorMsg.length">
+    <p class="p-0 m-0" *ngFor="let msg of errorMsg">
+      {{ msg }}
+    </p>
+  </div>
+  <div class="d-flex gap-2">
+    <div class="col-3">
+      <img
+        class="rounded-1"
+        width="100%"
+        height="100%"
+        [src]="selectedPicture || placeholderPicture"
+        alt="picture"
+      />
+      <div class="mt-2">
+        <input
+          (change)="onFileSelected($event)"
+          class="form-control"
+          type="file"
+          id="formFile"
+          accept="image/*"
+        />
+      </div>
+    </div>
+    <div class="col-9">
+      <form class="row g-3">
+        <div class="col-12">
+          <label for="title" class="form-label">Title</label>
+          <input
+            [(ngModel)]="toolRequest.name"
+            name="title"
+            type="text"
+            class="form-control"
+            id="title"
+            placeholder="title"
+          />
+        </div>
+        <div class="col-6">
+          <label for="category" class="form-label">Category</label>
+          <input
+            [(ngModel)]="toolRequest.category"
+            name="category"
+            type="text"
+            class="form-control"
+            id="category"
+            placeholder="category"
+          />
+        </div>
+        <div class="col-6">
+          <label for="condition" class="form-label">Condition</label>
+          <input
+            [(ngModel)]="toolRequest.condition"
+            name="condition"
+            type="text"
+            class="form-control"
+            id="condition"
+            placeholder="condition"
+          />
+        </div>
+        <div class="col-12">
+          <label for="description" class="form-label">Description</label>
+          <textarea
+            [(ngModel)]="toolRequest.description"
+            name="description"
+            type="text"
+            class="form-control"
+            rows="3"
+            id="description"
+            placeholder="description"
+          >
+          </textarea>
+        </div>
+        <div class="col-12">
+          <input
+            [(ngModel)]="toolRequest.available"
+            name="available"
+            type="checkbox"
+            class="form-check-input"
+            id="available"
+          />
+          <label for="availabe" class="form-check-label">
+            &nbsp;Make Availalbe
+          </label>
+        </div>
+        <div class="d-flex justify-content-center gap-2 col-12">
+          <button type="submit" class="btn btn-outline-primary">
+            <i class="fas fa-save">&nbsp;Save</i>
+          </button>
+          <a [routerLink]="'/tools/my-tools'" class="btn btn-link text-danger">
+            <i class="fas fa-times">&nbsp; Cancel</i>
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

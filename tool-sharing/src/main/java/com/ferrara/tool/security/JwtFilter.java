@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -61,16 +63,16 @@ public class JwtFilter extends OncePerRequestFilter {
             check if the user is already authenticated or not
             SecurityContextHolder.getContext().getAuthentication() == null means not
         */
-        if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             //fetch the user from the database
             UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
-            if(jwtService.isTokenValid(jwt, userDetails)){
+            if (jwtService.isTokenValid(jwt, userDetails)) {
                 /*
                     UsernamePasswordAuthenticationToken is used by Spring Security later on
                     in order to check and update the SecurityContextHolder
                 */
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    userDetails,
+                        userDetails,
                         null,
                         userDetails.getAuthorities()
                 );
@@ -82,7 +84,6 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-
-
     }
 }
+

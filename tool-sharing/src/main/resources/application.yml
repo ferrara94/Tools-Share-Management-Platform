@@ -6,9 +6,17 @@ spring:
       max-file-size: 50MB
 
 springdoc:
+  api-docs:
+    enabled: true
+    title: Tool Sharing API
+    description: API for the Tool Sharing platform
+    version: OPENAPI_3_0  # This is the enum value, NOT a version string like 1.0.0
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
   default-produces-media-type: application/json
-
 
 server:
   servlet:
     context-path: /api/v1/
+
