@@ -63,15 +63,11 @@ public class JwtService {
             check if the user is the same as we received
             and if the token is expired
         */
-        System.out.println("Extracted username: " + username);
-        System.out.println("Expected username: " + userDetails.getUsername());
-        System.out.println("Is token expired? " + isTokenExpired(token));
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token) );
     }
 
     private boolean isTokenExpired(String token) {
         Date expirationDate = extractExpiration(token);
-        System.out.println("Raw expiration date: " + expirationDate);
 
         ZonedDateTime expirationUtc = expirationDate.toInstant().atZone(ZoneId.of("UTC"));
         ZonedDateTime nowUtc = ZonedDateTime.now(ZoneId.of("UTC"));

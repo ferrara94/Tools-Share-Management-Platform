@@ -1,6 +1,10 @@
 <div 
-    class="card"
+    class="card border-5"
     style="width: 20rem;"
+    [class.border-success] = "tool.available"
+    [class.border-warning] = "!tool.available"
+    [class.border-danger] = "tool.archived"
+
 >
     <img height="150" width="150" [src]="toolPicture" class="card-img-top" alt="image" >
     <div class="card-body overflow-scroll">

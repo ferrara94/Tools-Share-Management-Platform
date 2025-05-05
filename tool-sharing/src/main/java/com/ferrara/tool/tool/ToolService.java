@@ -43,6 +43,12 @@ public class ToolService {
                 .orElseThrow(() -> new EntityNotFoundException("No tool found with the ID: " + toolId));
     }
 
+    public ToolResponse findByName(String toolName){
+        return repository.findByName(toolName)
+                .map(toolMapper::toToolResponse)
+                .orElseThrow(() -> new EntityNotFoundException("No tool found with the name: " + toolName));
+    }
+
     public PageResponse<ToolResponse> findAllTools(int page, int size, Authentication connectedUser) {
         User user = (User) connectedUser.getPrincipal();
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
@@ -124,6 +130,7 @@ public class ToolService {
         if (!Objects.equals(tool.getOwner().getId(), user.getId())) {
             throw new OperationNotPermittedException("YOU CANNOT UPDATE TOOL ARCHIVED STATUS");
         }
+        tool.setArchived(!tool.isArchived());
         tool.setAvailable(!tool.isArchived());
         repository.save(tool);
         return toolId;
@@ -161,7 +168,7 @@ public class ToolService {
         Tool tool = repository.findById(toolId)
                 .orElseThrow(() -> new EntityNotFoundException("NO TOOL FOUND WITH THE ID: " + toolId));
         if (tool.isArchived() || !tool.isAvailable()) {
-            throw new OperationNotPermittedException("THE REQUESTED TOOL CANNOT BE BORROWED SINCE IT IS NOT AVAILABLE OR IS ARCHIVED");
+            throw new OperationNotPermittedException("THE REQUESTED TOOL CANNOT BE RETURNED SINCE IT IS NOT AVAILABLE OR IS ARCHIVED");
         }
         User user = (User) connectedUser.getPrincipal();
         //avoid the owner returning its tool
@@ -200,8 +207,8 @@ public class ToolService {
                 .orElseThrow(() -> new EntityNotFoundException("NO TOOL FOUND WITH THE ID: " + toolId));
         User user = (User) connectedUser.getPrincipal();
 
-        var toolPicture = fileStorageService.saveFile(file, user.getId());
-        tool.setToolPicture(toolPicture);
+        var toolPicture = fileStorageService.saveFile(file, user.getId(), tool.getName());
+        tool.setToolPicture(tool.getName().replace(" ", "_"));
         repository.save(tool);
     }
 }

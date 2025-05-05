@@ -34,8 +34,8 @@ import { SaveTool$Params } from '../fn/tool/save-tool';
 import { ToolResponse } from '../models/tool-response';
 import { updateArchivedStatus } from '../fn/tool/update-archived-status';
 import { UpdateArchivedStatus$Params } from '../fn/tool/update-archived-status';
-import { updateShareableStatus } from '../fn/tool/update-shareable-status';
-import { UpdateShareableStatus$Params } from '../fn/tool/update-shareable-status';
+import { updateAvailableStatus } from '../fn/tool/update-shareable-status';
+import { UpdateAvailableStatus$Params } from '../fn/tool/update-shareable-status';
 import { uploadToolCoverPicture } from '../fn/tool/upload-tool-cover-picture';
 import { UploadToolCoverPicture$Params } from '../fn/tool/upload-tool-cover-picture';
 
@@ -54,7 +54,10 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findAllTools$Response(params?: FindAllTools$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseToolResponse>> {
+  findAllTools$Response(
+    params?: FindAllTools$Params,
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<PageResponseToolResponse>> {
     return findAllTools(this.http, this.rootUrl, params, context);
   }
 
@@ -64,9 +67,16 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findAllTools(params?: FindAllTools$Params, context?: HttpContext): Observable<PageResponseToolResponse> {
+  findAllTools(
+    params?: FindAllTools$Params,
+    context?: HttpContext
+  ): Observable<PageResponseToolResponse> {
     return this.findAllTools$Response(params, context).pipe(
-      map((r: StrictHttpResponse<PageResponseToolResponse>): PageResponseToolResponse => r.body)
+      map(
+        (
+          r: StrictHttpResponse<PageResponseToolResponse>
+        ): PageResponseToolResponse => r.body
+      )
     );
   }
 
@@ -79,7 +89,10 @@ export class ToolService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveTool$Response(params: SaveTool$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+  saveTool$Response(
+    params: SaveTool$Params,
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<number>> {
     return saveTool(this.http, this.rootUrl, params, context);
   }
 
@@ -104,8 +117,10 @@ export class ToolService extends BaseService {
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  uploadToolCoverPicture$Response(params: UploadToolCoverPicture$Params, context?: HttpContext): Observable<StrictHttpResponse<{
-}>> {
+  uploadToolCoverPicture$Response(
+    params: UploadToolCoverPicture$Params,
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<{}>> {
     return uploadToolCoverPicture(this.http, this.rootUrl, params, context);
   }
 
@@ -115,12 +130,12 @@ export class ToolService extends BaseService {
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  uploadToolCoverPicture(params: UploadToolCoverPicture$Params, context?: HttpContext): Observable<{
-}> {
+  uploadToolCoverPicture(
+    params: UploadToolCoverPicture$Params,
+    context?: HttpContext
+  ): Observable<{}> {
     return this.uploadToolCoverPicture$Response(params, context).pipe(
-      map((r: StrictHttpResponse<{
-}>): {
-} => r.body)
+      map((r: StrictHttpResponse<{}>): {} => r.body)
     );
   }
 
@@ -133,7 +148,10 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  borrowTool$Response(params: BorrowTool$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+  borrowTool$Response(
+    params: BorrowTool$Params,
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<number>> {
     return borrowTool(this.http, this.rootUrl, params, context);
   }
 
@@ -143,14 +161,17 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  borrowTool(params: BorrowTool$Params, context?: HttpContext): Observable<number> {
+  borrowTool(
+    params: BorrowTool$Params,
+    context?: HttpContext
+  ): Observable<number> {
     return this.borrowTool$Response(params, context).pipe(
       map((r: StrictHttpResponse<number>): number => r.body)
     );
   }
 
   /** Path part for operation `updateShareableStatus()` */
-  static readonly UpdateShareableStatusPath = '/tools/shareable/{tool-id}';
+  static readonly UpdateAvailableStatusPath = '/tools/available/{tool-id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -158,8 +179,11 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  updateShareableStatus$Response(params: UpdateShareableStatus$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
-    return updateShareableStatus(this.http, this.rootUrl, params, context);
+  updateAvailableStatus$Response(
+    params: UpdateAvailableStatus$Params,
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<number>> {
+    return updateAvailableStatus(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -168,8 +192,11 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  updateShareableStatus(params: UpdateShareableStatus$Params, context?: HttpContext): Observable<number> {
-    return this.updateShareableStatus$Response(params, context).pipe(
+  updateAvailableStatus(
+    params: UpdateAvailableStatus$Params,
+    context?: HttpContext
+  ): Observable<number> {
+    return this.updateAvailableStatus$Response(params, context).pipe(
       map((r: StrictHttpResponse<number>): number => r.body)
     );
   }
@@ -183,7 +210,10 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  returnBorrowTool$Response(params: ReturnBorrowTool$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+  returnBorrowTool$Response(
+    params: ReturnBorrowTool$Params,
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<number>> {
     return returnBorrowTool(this.http, this.rootUrl, params, context);
   }
 
@@ -193,14 +223,18 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  returnBorrowTool(params: ReturnBorrowTool$Params, context?: HttpContext): Observable<number> {
+  returnBorrowTool(
+    params: ReturnBorrowTool$Params,
+    context?: HttpContext
+  ): Observable<number> {
     return this.returnBorrowTool$Response(params, context).pipe(
       map((r: StrictHttpResponse<number>): number => r.body)
     );
   }
 
   /** Path part for operation `approveReturnBorrowTool()` */
-  static readonly ApproveReturnBorrowToolPath = '/tools/borrow/return/approve/{tool-id}';
+  static readonly ApproveReturnBorrowToolPath =
+    '/tools/borrow/return/approve/{tool-id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -208,7 +242,10 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  approveReturnBorrowTool$Response(params: ApproveReturnBorrowTool$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+  approveReturnBorrowTool$Response(
+    params: ApproveReturnBorrowTool$Params,
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<number>> {
     return approveReturnBorrowTool(this.http, this.rootUrl, params, context);
   }
 
@@ -218,7 +255,10 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  approveReturnBorrowTool(params: ApproveReturnBorrowTool$Params, context?: HttpContext): Observable<number> {
+  approveReturnBorrowTool(
+    params: ApproveReturnBorrowTool$Params,
+    context?: HttpContext
+  ): Observable<number> {
     return this.approveReturnBorrowTool$Response(params, context).pipe(
       map((r: StrictHttpResponse<number>): number => r.body)
     );
@@ -233,7 +273,10 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  updateArchivedStatus$Response(params: UpdateArchivedStatus$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+  updateArchivedStatus$Response(
+    params: UpdateArchivedStatus$Params,
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<number>> {
     return updateArchivedStatus(this.http, this.rootUrl, params, context);
   }
 
@@ -243,7 +286,10 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  updateArchivedStatus(params: UpdateArchivedStatus$Params, context?: HttpContext): Observable<number> {
+  updateArchivedStatus(
+    params: UpdateArchivedStatus$Params,
+    context?: HttpContext
+  ): Observable<number> {
     return this.updateArchivedStatus$Response(params, context).pipe(
       map((r: StrictHttpResponse<number>): number => r.body)
     );
@@ -258,7 +304,10 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findToolById$Response(params: FindToolById$Params, context?: HttpContext): Observable<StrictHttpResponse<ToolResponse>> {
+  findToolById$Response(
+    params: FindToolById$Params,
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<ToolResponse>> {
     return findToolById(this.http, this.rootUrl, params, context);
   }
 
@@ -268,11 +317,46 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findToolById(params: FindToolById$Params, context?: HttpContext): Observable<ToolResponse> {
+  findToolById(
+    params: FindToolById$Params,
+    context?: HttpContext
+  ): Observable<ToolResponse> {
     return this.findToolById$Response(params, context).pipe(
       map((r: StrictHttpResponse<ToolResponse>): ToolResponse => r.body)
     );
   }
+
+  /** Path part for operation `findToolByName()` */
+  static readonly FindToolByNamePath = '/tools/name/{tool-name}';
+
+  /**
+   * Get a tool by its name.
+   * This method provides access to the full `HttpResponse`.
+   */
+  findToolByName$Response(
+    params: { toolName: string },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<ToolResponse>> {
+    const path = ToolService.FindToolByNamePath.replace(
+      '{tool-name}',
+      encodeURIComponent(params.toolName)
+    );
+    const url = `${this.rootUrl}${path}`;
+
+    return this.http.get<ToolResponse>(url, {
+      observe: 'response',
+      context,
+    }) as Observable<StrictHttpResponse<ToolResponse>>;
+  }
+
+  /**
+ * Get only the response body (convenience method).
+ */
+findToolByName(params: { toolName: string }, context?: HttpContext): Observable<ToolResponse> {
+  return this.findToolByName$Response(params, context).pipe(
+    map(r => r.body as ToolResponse)
+  );
+}
 
   /** Path part for operation `findAllReturnedTools()` */
   static readonly FindAllReturnedToolsPath = '/tools/returned';
@@ -283,7 +367,10 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findAllReturnedTools$Response(params?: FindAllReturnedTools$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseBorrowedToolResponse>> {
+  findAllReturnedTools$Response(
+    params?: FindAllReturnedTools$Params,
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<PageResponseBorrowedToolResponse>> {
     return findAllReturnedTools(this.http, this.rootUrl, params, context);
   }
 
@@ -293,9 +380,16 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findAllReturnedTools(params?: FindAllReturnedTools$Params, context?: HttpContext): Observable<PageResponseBorrowedToolResponse> {
+  findAllReturnedTools(
+    params?: FindAllReturnedTools$Params,
+    context?: HttpContext
+  ): Observable<PageResponseBorrowedToolResponse> {
     return this.findAllReturnedTools$Response(params, context).pipe(
-      map((r: StrictHttpResponse<PageResponseBorrowedToolResponse>): PageResponseBorrowedToolResponse => r.body)
+      map(
+        (
+          r: StrictHttpResponse<PageResponseBorrowedToolResponse>
+        ): PageResponseBorrowedToolResponse => r.body
+      )
     );
   }
 
@@ -308,7 +402,10 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findAllToolsByOwner$Response(params?: FindAllToolsByOwner$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseToolResponse>> {
+  findAllToolsByOwner$Response(
+    params?: FindAllToolsByOwner$Params,
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<PageResponseToolResponse>> {
     return findAllToolsByOwner(this.http, this.rootUrl, params, context);
   }
 
@@ -318,9 +415,16 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findAllToolsByOwner(params?: FindAllToolsByOwner$Params, context?: HttpContext): Observable<PageResponseToolResponse> {
+  findAllToolsByOwner(
+    params?: FindAllToolsByOwner$Params,
+    context?: HttpContext
+  ): Observable<PageResponseToolResponse> {
     return this.findAllToolsByOwner$Response(params, context).pipe(
-      map((r: StrictHttpResponse<PageResponseToolResponse>): PageResponseToolResponse => r.body)
+      map(
+        (
+          r: StrictHttpResponse<PageResponseToolResponse>
+        ): PageResponseToolResponse => r.body
+      )
     );
   }
 
@@ -333,7 +437,10 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findAllBorrowedTools$Response(params?: FindAllBorrowedTools$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseBorrowedToolResponse>> {
+  findAllBorrowedTools$Response(
+    params?: FindAllBorrowedTools$Params,
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<PageResponseBorrowedToolResponse>> {
     return findAllBorrowedTools(this.http, this.rootUrl, params, context);
   }
 
@@ -343,10 +450,16 @@ export class ToolService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findAllBorrowedTools(params?: FindAllBorrowedTools$Params, context?: HttpContext): Observable<PageResponseBorrowedToolResponse> {
+  findAllBorrowedTools(
+    params?: FindAllBorrowedTools$Params,
+    context?: HttpContext
+  ): Observable<PageResponseBorrowedToolResponse> {
     return this.findAllBorrowedTools$Response(params, context).pipe(
-      map((r: StrictHttpResponse<PageResponseBorrowedToolResponse>): PageResponseBorrowedToolResponse => r.body)
+      map(
+        (
+          r: StrictHttpResponse<PageResponseBorrowedToolResponse>
+        ): PageResponseBorrowedToolResponse => r.body
+      )
     );
   }
-
 }

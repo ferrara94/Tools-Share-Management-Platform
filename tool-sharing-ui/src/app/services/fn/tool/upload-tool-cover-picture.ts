@@ -35,4 +35,4 @@ export function uploadToolCoverPicture(http: HttpClient, rootUrl: string, params
   );
 }
 
-uploadToolCoverPicture.PATH = '/tools/cover/{tool-id}';
+uploadToolCoverPicture.PATH = '/tools/picture/{tool-id}';

@@ -90,7 +90,10 @@
     {{ errorMessage }}
   </p>
 
-  <button class="btn btn-tertiary border border-secondary">
-    Check Credentials
+  <button 
+    class="btn btn-light text-primary border border-primary"
+    (click)="goToLogin()"
+  >
+    <i class="fas fa-sign-in-alt me-2"></i>Log-in
   </button>
 </div>

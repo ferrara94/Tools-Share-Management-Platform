@@ -44,6 +44,11 @@ export class ToolListComponent implements OnInit {
     });
   }
 
+  goToLogin(){
+    this.errorMessage = '';
+    this.router.navigate(['/login'])
+  }
+
   goToFirstPage(){
     this.page = 0;
     this.findAllTools();

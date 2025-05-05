@@ -33,7 +33,7 @@ const routes: Routes = [
         component: ManageToolComponent
       },
       {
-        path: 'manage/id',
+        path: 'manage/:id',
         component: ManageToolComponent
       }
     ]

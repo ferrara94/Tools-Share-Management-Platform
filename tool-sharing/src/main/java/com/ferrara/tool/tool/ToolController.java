@@ -32,10 +32,17 @@ public class ToolController {
     }
 
     @GetMapping("{tool-id}")
-    public ResponseEntity<ToolResponse> findTooById(
+    public ResponseEntity<ToolResponse> findToolById(
         @PathVariable("tool-id") Integer toolId
     ) {
         return ResponseEntity.ok(service.findById(toolId));
+    }
+
+    @GetMapping("/name/{tool-name}")
+    public ResponseEntity<ToolResponse> findToolByName(
+            @PathVariable("tool-name") String toolName
+    ) {
+        return ResponseEntity.ok(service.findByName(toolName));
     }
 
     @GetMapping

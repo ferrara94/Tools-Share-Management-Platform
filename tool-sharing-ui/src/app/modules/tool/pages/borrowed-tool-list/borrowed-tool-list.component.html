@@ -1,1 +1,134 @@
-<p>borrowed-tool-list works!</p>
+<h2>My borrowed Tools</h2>
+<hr />
+
+<!-- Legend Area -->
+<div class="border rounded p-3 bg-light">
+  <h6 class="mb-2">Legend</h6>
+  <div class="d-flex flex-column gap-2">
+    <div class="d-flex align-items-center gap-2">
+      <i class="fa-regular fa-paper-plane text-success"></i>&nbsp; It is
+      possible to return the tool
+    </div>
+    <div class="d-flex align-items-center gap-2">
+        <i class="fa-regular fa-paper-plane text-primary"></i>&nbsp; Tool returned
+      </div>
+    <div class="d-flex align-items-center gap-2">
+      <i class="fa-solid fa-circle-check"></i>&nbsp; The tool-return is not yet
+      approved
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <i class="fas fa-cogs"></i>&nbsp; Actions
+    </div>
+  </div>
+</div>
+
+<br />
+<div class="border rounded p-3 bg-secondary"></div>
+
+  <div *ngIf="selectedTool" class="d-flex flex-column col-6">
+    <h2>Return and share feedback</h2>
+    <div class="d-flex flex-column col-12">
+      <div class="d-flex">
+        <div class="col-1">
+          <strong>Name</strong>
+        </div>
+        <div class="col-11">
+          {{ selectedTool.name }}
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="col-1">
+          <strong>Category</strong>
+        </div>
+        <div class="col-11">
+          {{ selectedTool.category }}
+        </div>
+      </div>
+    </div>
+    <hr />
+    <div class="col-12">
+      <form class="row g-3">
+        <div class="d-flex gap-3">
+          <i class="fas fa-star-half-alt"></i> Feedback
+          <input
+            [(ngModel)]="feedbackRequest.stars"
+            type="range"
+            id="rate"
+            name="rate"
+            min="0"
+            max="5"
+            class="form-range w-25"
+            step="1"
+          />
+          <app-rating [rating]="feedbackRequest.stars || 0"></app-rating>
+          {{ feedbackRequest.stars }}
+        </div>
+        <div class="col-12">
+          <label for="comment" class="form-label">Comment</label>
+          <textarea
+            [(ngModel)]="feedbackRequest.comment"
+            rows="3"
+            class="form-control"
+            id="comment"
+            name="comment"
+            placeholder="Feedback comment"
+          ></textarea>
+        </div>
+        <div class="d-flex justify-content-end gap-2 col-12">
+            <button (click)="returnTool(true)" type="submit" class="btn btn-outline-primary">
+                <i class="fas fa-save">&nbsp; Rate the tool & Return</i>
+            </button>
+            <button (click)="returnTool(false)" type="submit" class="btn btn-outline-success">
+                <i class="fas fa-paper-plane">&nbsp; Return with no feedback</i>
+            </button>
+            <button (click)="selectedTool = undefined" class="btn btn-link text-danger">
+                <i class="fas fa-times">&nbsp; Cancel</i>
+            </button>
+        </div>
+        
+      </form>
+    </div>
+</div>
+
+<br />
+
+<div *ngIf="!selectedTool" class="border rounded p-3 bg-light">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col"><i class="fas fa-table"></i></th>
+        <th scope="col">Name</th>
+        <th scope="col">Condition</th>
+        <th scope="col">Category</th>
+        <th scope="col">Rate</th>
+        <th scope="col"><i class="fas fa-cogs"></i></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tool of borrowedTools.content; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ tool.name }}</td>
+        <td>{{ tool.condition }}</td>
+        <td>{{ tool.category }}</td>
+        <td><i class="fas fa-star text-warning"></i>{{ tool.rate }}</td>
+        <td>
+          <div class="d-flex gap-2">
+            <i
+              *ngIf="tool.returned"
+              class="cursor-pointer fa-regular fa-paper-plane text-primary"
+            ></i>
+            <i
+              *ngIf="!tool.returned"
+              (click)="returnBorrowedTool(tool)"
+              class="cursor-pointer fa-solid fa-paper-plane text-success"
+            ></i>
+            <i
+              class="cursor-pointer fa-solid fa-circle-check"
+              [class.text-success]="tool.returnedApproved"
+            ></i>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

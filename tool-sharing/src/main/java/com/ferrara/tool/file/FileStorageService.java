@@ -21,12 +21,12 @@ public class FileStorageService {
     @Value("${application.file.upload.pictures-output-path}")
     private String fileUploadPath;
 
-    public String saveFile(@NotNull MultipartFile sourceFile,  @NotNull Integer userId) {
-        final String fileUploadSubPath = "users" + File.separator + userId;
-        return uploadFile(sourceFile, fileUploadSubPath);
+    public String saveFile(@NotNull MultipartFile sourceFile,  @NotNull Integer userId, String toolName) {
+        final String fileUploadSubPath = "assets" + File.separator + "images";
+        return uploadFile(sourceFile, fileUploadSubPath,toolName);
     }
 
-    private String uploadFile(@NotNull MultipartFile sourceFile, @NotNull String fileUploadSubPath) {
+    private String uploadFile(@NotNull MultipartFile sourceFile, @NotNull String fileUploadSubPath, String toolName) {
         final String finalUploadPath = fileUploadPath + File.separator + fileUploadSubPath;
         File targetFolder = new File(finalUploadPath);
         if (!targetFolder.exists()) {
@@ -38,7 +38,7 @@ public class FileStorageService {
         }
 
         final String fileExtension = getFileExtension(sourceFile.getOriginalFilename());
-        String targetFilePath = finalUploadPath + File.separator + System.currentTimeMillis() + "." +fileExtension;
+        String targetFilePath = finalUploadPath + File.separator + toolName.replace(" ", "") + "." +fileExtension;
         Path targetPath = Paths.get(targetFilePath);
         try{
             Files.write(targetPath, sourceFile.getBytes());

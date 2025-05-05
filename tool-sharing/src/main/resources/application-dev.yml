@@ -35,7 +35,7 @@ spring:
 application:
   file:
     upload:
-      pictures-output-path: ./uploads #directory in the root folder
+      pictures-output-path: ./tool-sharing-ui/src #directory in the root folder (angular project)
   security:
     jwt:
       secret-key: 9741f747c3dc3985f70c26446f371db4f2766663fa19d045bbecb1456494f6a0

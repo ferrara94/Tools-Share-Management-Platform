@@ -70,8 +70,7 @@
             rows="3"
             id="description"
             placeholder="description"
-          >
-          </textarea>
+          ></textarea>
         </div>
         <div class="col-12">
           <input
@@ -86,7 +85,11 @@
           </label>
         </div>
         <div class="d-flex justify-content-center gap-2 col-12">
-          <button type="submit" class="btn btn-outline-primary">
+          <button
+            (click)="saveTool()"
+            type="submit"
+            class="btn btn-outline-primary"
+          >
             <i class="fas fa-save">&nbsp;Save</i>
           </button>
           <a [routerLink]="'/tools/my-tools'" class="btn btn-link text-danger">

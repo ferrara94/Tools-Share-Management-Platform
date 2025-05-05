@@ -9,12 +9,12 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 
-export interface UpdateShareableStatus$Params {
+export interface UpdateAvailableStatus$Params {
   'tool-id': number;
 }
 
-export function updateShareableStatus(http: HttpClient, rootUrl: string, params: UpdateShareableStatus$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
-  const rb = new RequestBuilder(rootUrl, updateShareableStatus.PATH, 'patch');
+export function updateAvailableStatus(http: HttpClient, rootUrl: string, params: UpdateAvailableStatus$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
+  const rb = new RequestBuilder(rootUrl, updateAvailableStatus.PATH, 'patch');
   if (params) {
     rb.path('tool-id', params['tool-id'], {});
   }
@@ -29,4 +29,4 @@ export function updateShareableStatus(http: HttpClient, rootUrl: string, params:
   );
 }
 
-updateShareableStatus.PATH = '/tools/shareable/{tool-id}';
+updateAvailableStatus.PATH = '/tools/available/{tool-id}';

@@ -18,6 +18,7 @@ export class MyToolsComponent implements OnInit {
 
   toolResponse: PageResponseToolResponse = {};
   errorMessage = "";
+  errorAvailabilityMessage = "";
   
 
   constructor(private toolService: ToolService, private router: Router) {}
@@ -68,15 +69,41 @@ export class MyToolsComponent implements OnInit {
   }
 
   archiveTool(tool: ToolResponse) {
-
+    this.toolService.updateArchivedStatus({
+      "tool-id": tool.id as number
+    }).subscribe({
+      next: () => {
+        tool.archived = !tool.archived;
+      }
+    })
   }
 
   editTool(tool: ToolResponse) {
-
+    this.router.navigate(['tools','manage', tool.id])
   }
 
   shareTool(tool: ToolResponse) {
-
+    if(!tool.archived){
+      this.errorAvailabilityMessage = "";
+      this.toolService.updateAvailableStatus({
+        "tool-id": tool.id as number
+      }).subscribe({
+        next: () => {
+          tool.available = !tool.available
+        }
+      })
+    } else {
+      this.errorAvailabilityMessage = "tool archived cannot be shareable";
+      console.log("tool archived cannot be shareable")
+    }
   }
 
+  goToLogin(){
+    this.errorMessage = '';
+    this.router.navigate(['/login'])
+  }
+
+  closeErrorArea(){
+    this.errorAvailabilityMessage = "";
+  }
 }
