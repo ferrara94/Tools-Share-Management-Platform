@@ -1,4 +1,4 @@
-<h2>My borrowed Tools</h2>
+<h2>My borrowed Tools to return</h2>
 <hr />
 
 <!-- Legend Area -->
@@ -10,11 +10,14 @@
       possible to return the tool
     </div>
     <div class="d-flex align-items-center gap-2">
-        <i class="fa-regular fa-paper-plane text-primary"></i>&nbsp; Tool returned
-      </div>
+      <i class="fa-regular fa-paper-plane text-primary"></i>&nbsp; Tool returned
+    </div>
     <div class="d-flex align-items-center gap-2">
-      <i class="fa-solid fa-circle-check"></i>&nbsp; The tool-return is not yet
-      approved
+      <i class="fa-solid fa-circle-check" [class.text-success]="true"></i>&nbsp; The tool-return is approved
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <i class="fa-solid fa-circle-notch fa-spin"></i>&nbsp; The
+      tool-return-approval is pending
     </div>
     <div class="d-flex align-items-center gap-2">
       <i class="fas fa-cogs"></i>&nbsp; Actions
@@ -25,69 +28,80 @@
 <br />
 <div class="border rounded p-3 bg-secondary"></div>
 
-  <div *ngIf="selectedTool" class="d-flex flex-column col-6">
-    <h2>Return and share feedback</h2>
-    <div class="d-flex flex-column col-12">
-      <div class="d-flex">
-        <div class="col-1">
-          <strong>Name</strong>
-        </div>
-        <div class="col-11">
-          {{ selectedTool.name }}
-        </div>
+<div *ngIf="selectedTool" class="d-flex flex-column col-6">
+  <h2>Return and share feedback</h2>
+  <div class="d-flex flex-column col-12">
+    <div class="d-flex">
+      <div class="col-1">
+        <strong>Name</strong>
       </div>
-      <div class="d-flex">
-        <div class="col-1">
-          <strong>Category</strong>
-        </div>
-        <div class="col-11">
-          {{ selectedTool.category }}
-        </div>
+      <div class="col-11">
+        {{ selectedTool.name }}
       </div>
     </div>
-    <hr />
-    <div class="col-12">
-      <form class="row g-3">
-        <div class="d-flex gap-3">
-          <i class="fas fa-star-half-alt"></i> Feedback
-          <input
-            [(ngModel)]="feedbackRequest.stars"
-            type="range"
-            id="rate"
-            name="rate"
-            min="0"
-            max="5"
-            class="form-range w-25"
-            step="1"
-          />
-          <app-rating [rating]="feedbackRequest.stars || 0"></app-rating>
-          {{ feedbackRequest.stars }}
-        </div>
-        <div class="col-12">
-          <label for="comment" class="form-label">Comment</label>
-          <textarea
-            [(ngModel)]="feedbackRequest.comment"
-            rows="3"
-            class="form-control"
-            id="comment"
-            name="comment"
-            placeholder="Feedback comment"
-          ></textarea>
-        </div>
-        <div class="d-flex justify-content-end gap-2 col-12">
-            <button (click)="returnTool(true)" type="submit" class="btn btn-outline-primary">
-                <i class="fas fa-save">&nbsp; Rate the tool & Return</i>
-            </button>
-            <button (click)="returnTool(false)" type="submit" class="btn btn-outline-success">
-                <i class="fas fa-paper-plane">&nbsp; Return with no feedback</i>
-            </button>
-            <button (click)="selectedTool = undefined" class="btn btn-link text-danger">
-                <i class="fas fa-times">&nbsp; Cancel</i>
-            </button>
-        </div>
-        
-      </form>
+    <div class="d-flex">
+      <div class="col-1">
+        <strong>Category</strong>
+      </div>
+      <div class="col-11">
+        {{ selectedTool.category }}
+      </div>
     </div>
+  </div>
+  <hr />
+  <div class="col-12">
+    <form class="row g-3">
+      <div class="d-flex gap-3">
+        <i class="fas fa-star-half-alt"></i> Feedback
+        <input
+          [(ngModel)]="feedbackRequest.stars"
+          type="range"
+          id="rate"
+          name="rate"
+          min="0"
+          max="5"
+          class="form-range w-25"
+          step="1"
+        />
+        <app-rating [rating]="feedbackRequest.stars || 0"></app-rating>
+        {{ feedbackRequest.stars }}
+      </div>
+      <div class="col-12">
+        <label for="comment" class="form-label">Comment</label>
+        <textarea
+          [(ngModel)]="feedbackRequest.comment"
+          rows="3"
+          class="form-control"
+          id="comment"
+          name="comment"
+          placeholder="Feedback comment"
+        ></textarea>
+      </div>
+      <div class="d-flex justify-content-end gap-2 col-12">
+        <button
+          [disabled]="true"
+          (click)="returnTool(); giveFeedback()"
+          type="submit"
+          class="btn btn-outline-primary"
+        >
+          <i class="fas fa-save">&nbsp; Rate the tool & Return</i>
+        </button>
+        <button
+          (click)="returnTool()"
+          type="submit"
+          class="btn btn-outline-success"
+        >
+          <i class="fas fa-paper-plane">&nbsp; Return with no feedback</i>
+        </button>
+        <button
+          (click)="selectedTool = undefined"
+          class="btn btn-link text-danger"
+        >
+          <i class="fas fa-times">&nbsp; Cancel</i>
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <br />
@@ -123,9 +137,10 @@
               class="cursor-pointer fa-solid fa-paper-plane text-success"
             ></i>
             <i
-              class="cursor-pointer fa-solid fa-circle-check"
-              [class.text-success]="tool.returnedApproved"
+              *ngIf="tool.returned && !tool.returnApproved"
+              class="fa-solid fa-circle-notch fa-spin"
             ></i>
+            <i *ngIf="tool.returnApproved" class="fa-solid fa-circle-check" [class.text-success]="tool.returnApproved"></i>
           </div>
         </td>
       </tr>

@@ -48,13 +48,13 @@ export class BorrowedToolListComponent implements OnInit {
       })
       .subscribe({
         next: (resp) => {
-          console.log('borrowed', resp);
+          console.log('borrowed', resp.content);
           this.borrowedTools = resp;
         },
       });
   }
 
-  returnTool(withFeedback: boolean) {
+  returnTool() {
     this.toolService
       .findToolByName({
         toolName: this.selectedTool?.name as string,
@@ -67,9 +67,6 @@ export class BorrowedToolListComponent implements OnInit {
             })
             .subscribe({
               next: () => {
-                if (withFeedback) {
-                  this.giveFeedback();
-                }
                 this.selectedTool = undefined;
                 this.findAllBorrowedTools();
               },
@@ -79,13 +76,30 @@ export class BorrowedToolListComponent implements OnInit {
       });
   }
 
+  //TODO check why is not working as expected
   giveFeedback() {
-    this.feedbackService
-      .saveFeedback({
-        body: this.feedbackRequest,
+    console.log("give feedback", this.feedbackRequest)
+    this.toolService
+      .findToolByName({
+        toolName: this.selectedTool?.name as string,
       })
       .subscribe({
-        next: () => {},
-      });
+        next: (tool) => {
+          this.feedbackService
+          .saveFeedback({
+            body: {
+              comment: this.feedbackRequest.comment,
+              stars: this.feedbackRequest.stars,
+              toolId: tool.id as number
+            },
+          })
+          .subscribe({
+            next: (item) => {
+              console.log("item",item)
+            },
+            error: (err) => console.error('Feedback not added', err),
+          });
+        },
+      })
   }
 }

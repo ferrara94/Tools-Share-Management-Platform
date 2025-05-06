@@ -8,7 +8,7 @@ export interface BorrowedToolResponse {
   description?: string;
   condition?: string;
   category?: string;
-  returnedApproved?: boolean;
+  returnApproved?: boolean;
   returned?: boolean;
   rate?: number;
 }

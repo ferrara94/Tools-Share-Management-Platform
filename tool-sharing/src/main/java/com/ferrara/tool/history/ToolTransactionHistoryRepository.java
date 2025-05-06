@@ -48,4 +48,11 @@ public interface ToolTransactionHistoryRepository extends JpaRepository<ToolTran
             AND history.returnApproved = false
             """)
     Optional<ToolTransactionHistory> findByToolIdAndOwnerId(@Param("toolId") Integer toolId, @Param("userId") Integer userId);
+
+    @Query("""
+            SELECT history
+            FROM ToolTransactionHistory history
+            WHERE history.toolId.createdBy = :userId
+            """)
+    Page<ToolTransactionHistory> findAllReturnedTools(Pageable pageable, @Param("userId") Integer userId);
 }

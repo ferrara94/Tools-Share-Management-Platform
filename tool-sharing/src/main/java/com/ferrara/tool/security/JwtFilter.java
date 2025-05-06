@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -48,7 +46,6 @@ public class JwtFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader(AUTHORIZATION);
         final String jwt;
         final String userEmail; //we'll extract from the TOKEN
-
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             /*

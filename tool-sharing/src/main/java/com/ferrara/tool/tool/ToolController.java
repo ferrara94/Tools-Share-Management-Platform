@@ -72,7 +72,14 @@ public class ToolController {
         return ResponseEntity.ok(service.findAllBorrowedTools(page, size, connectedUser));
     }
 
-    //TODO IMPLEMENT GET RETURNED ALL TOOLS
+    @GetMapping("/returned")
+    public ResponseEntity<PageResponse<BorrowedToolResponse>> findAllReturnedTools(
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size,
+            Authentication connectedUser
+    ) {
+        return ResponseEntity.ok(service.findAllReturnedTools(page, size, connectedUser));
+    }
 
     @PatchMapping("/available/{tool-id}") //update the available status
     public ResponseEntity<Integer> updateAvailableStatus(

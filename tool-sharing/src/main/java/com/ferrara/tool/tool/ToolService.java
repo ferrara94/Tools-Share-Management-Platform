@@ -188,9 +188,9 @@ public class ToolService {
             throw new OperationNotPermittedException("THE REQUESTED TOOL CANNOT BE BORROWED SINCE IT IS NOT AVAILABLE OR IS ARCHIVED");
         }
         User user = (User) connectedUser.getPrincipal();
-        //avoid the owner approving the return of its tool
-        if (Objects.equals(tool.getOwner().getId(), user.getId())) {
-            throw new OperationNotPermittedException("YOU CANNOT APPROVE THE RETURN OF YOUR OWN TOOL SINCE YOU COULDN'T BORROW IT ");
+        //avoid the owner approving the return of tool which are not owned
+        if (!Objects.equals(tool.getOwner().getId(), user.getId())) {
+            throw new OperationNotPermittedException("YOU CANNOT APPROVE THE RETURN OF A TOOL YOU DON'T OWN ");
         }
 
         //CHECK IF THE TOOL RETURNED IS OWNED BY THE USER (SO BY THE OWNER)
@@ -210,5 +210,23 @@ public class ToolService {
         var toolPicture = fileStorageService.saveFile(file, user.getId(), tool.getName());
         tool.setToolPicture(tool.getName().replace(" ", "_"));
         repository.save(tool);
+    }
+
+    public PageResponse<BorrowedToolResponse> findAllReturnedTools(int page, int size, Authentication connectedUser) {
+        User user = (User) connectedUser.getPrincipal();
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+        Page<ToolTransactionHistory> allBorrowedTools = transactionHistoryRepository.findAllReturnedTools(pageable, user.getId());
+        List<BorrowedToolResponse> toolsResponse = allBorrowedTools.stream()
+                .map(toolMapper::toBorrowedToolResponse)
+                .toList();
+        return new PageResponse<>(
+                toolsResponse,
+                allBorrowedTools.getNumber(),
+                allBorrowedTools.getSize(),
+                allBorrowedTools.getTotalElements(),
+                allBorrowedTools.getTotalPages(),
+                allBorrowedTools.isFirst(),
+                allBorrowedTools.isLast()
+        );
     }
 }

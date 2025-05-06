@@ -8,7 +8,9 @@ export const httpTokenInterceptor: HttpInterceptorFn = (req, next) => {
 
   // Log to verify the interceptor is being called
   console.log('Interceptor called');
-  console.log('Token:', token);
+  if (token) {
+    console.log('Token:', token);
+  }
 
   if (token) {
     const authReq = req.clone({
