@@ -6,6 +6,7 @@ import { BorrowedToolListComponent } from './pages/borrowed-tool-list/borrowed-t
 import { ReturnedToolsComponent } from './pages/returned-tools/returned-tools.component';
 import { MyToolsComponent } from './pages/my-tools/my-tools.component';
 import { ManageToolComponent } from './pages/manage-tool/manage-tool.component';
+import { authGuard } from '../../services/guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -14,27 +15,34 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: ToolListComponent
+        component: ToolListComponent,
+        canActivate: [authGuard]
       },
       {
         path: 'my-tools',
-        component: MyToolsComponent
+        component: MyToolsComponent,
+        canActivate: [authGuard]
+
       },
       {
         path: 'my-borrowed-tools',
-        component: BorrowedToolListComponent
+        component: BorrowedToolListComponent,
+        canActivate: [authGuard]
       },
       {
         path: 'my-returned-tools',
-        component: ReturnedToolsComponent
+        component: ReturnedToolsComponent,
+        canActivate: [authGuard]
       },
       {
         path: 'manage',
-        component: ManageToolComponent
+        component: ManageToolComponent,
+        canActivate: [authGuard]
       },
       {
         path: 'manage/:id',
-        component: ManageToolComponent
+        component: ManageToolComponent,
+        canActivate: [authGuard]
       }
     ]
   }
