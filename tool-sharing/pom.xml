@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.ferrara</groupId>
 	<artifactId>tool-sharing</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>tool-sharing-api</name>
 	<description>Spring boot project for tool sharing platform </description>
 	<url/>
