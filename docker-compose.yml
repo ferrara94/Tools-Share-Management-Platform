@@ -25,6 +25,16 @@ services:
     depends_on:
       - postgres
 
+  tsmp-ui:
+    container_name: tsmp-ui
+    image: tsmp/tsmp-ui:1.0.0  # Specify the local image with the tag you used
+    ports:
+      - 6655:80
+    networks:
+      - tool-share-platform
+    depends_on:
+      - tsmp-api
+
   mail-dev:
     container_name: mail-dev-tsmp
     image: maildev/maildev
