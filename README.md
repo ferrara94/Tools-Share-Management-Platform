@@ -11,9 +11,18 @@ after use, and approve returns from others.
 ----
 ## 📝 Instructions
 
-> ⚠️ **Note:**  
-> The current stable version of the application is available in the Releases section (e.g., v1.0.0).
-To run the application reliably, please use the latest tagged [release](https://github.com/ferrara94/Tools-Share-Management-Platform/releases) instead of the main branch.
+> ⚠️ Note:
+> The current stable versions of the application are available in the [**Releases section**](https://github.com/ferrara94/Tools-Share-Management-Platform/tags) (e.g., v1.0.0).
+> 
+>❗The main branch is the same as the Dockerized version, which means it includes the latest version of the app configured for containerized deployment with Docker Compose.
+
+#### 🐳 Docker Native Solution 
+This version runs all components (Spring, Angular, PostgreSql) inside **Docker containers**. You can run the entire application using **Docker Compose**.
+To run the Docker-based version, simply use the latest tagged [release](https://github.com/ferrara94/Tools-Share-Management-Platform/releases/tag/v1.0.1) and follow the containerized setup instructions.
+
+#### 💻 Development Mode Solution
+In this version, you run the Spring and Angular components separately in "**dev**" mode. The **Angular** app can be run using ng serve, and the Spring app can be executed through an IDE like IntelliJ.
+To run in this mode, use this [release](https://github.com/ferrara94/Tools-Share-Management-Platform/releases) and follow the "dev mode" instructions.
 
 
 ---
