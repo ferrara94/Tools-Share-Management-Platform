@@ -20,8 +20,8 @@ RUN mvn clean package -DskipTests
 FROM amazoncorretto:17
 
 # Arguments to pass the profile (default to 'dev') and version (default to '1.0.0')
-ARG PROFILE=dev
-ARG APP_VERSION=1.0.0
+ARG PROFILE=docker
+ARG APP_VERSION=1.0.1
 
 # Set the working directory for the runtime container
 WORKDIR /app

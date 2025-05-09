@@ -8,7 +8,7 @@ services:
       PGDATA: /var/lib/postgresql/data
       POSTGRES_DB: tool_share_management_platform
     volumes:
-      - postgres:/data/postgres
+      - postgres:/var/lib/postgresql/data
     ports:
       - 5432:5432
     networks:
@@ -17,7 +17,7 @@ services:
 
   tsmp-api:
     container_name: tsmp-api
-    image: tsmp/tsmp:1.0.0  # Specify the local image with the tag you used
+    image: tsmp/tsmp:1.0.1  # Specify the local image with the tag you used
     ports:
       - 8080:8080
     networks:
@@ -41,6 +41,8 @@ services:
     ports:
       - 1080:1080
       - 1025:1025
+    networks:
+      - tool-share-platform
 
 networks:
   tool-share-platform:
