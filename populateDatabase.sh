@@ -7,8 +7,7 @@ until sudo docker exec postgres-sql-tsmp pg_isready -U username > /dev/null 2>&1
   sleep 2
 done
 
-echo "Postgres is ready, inserting user and tools..."
-echo "Inserting a user..."
+echo "Inserting a role..."
 sudo docker exec postgres-sql-tsmp psql -U username -d tool_share_management_platform -c "
 INSERT INTO \"role\" (
   id,
