@@ -3,7 +3,7 @@
 ROOT_DIR=$(pwd)
 
 echo "Building backend..."
-sudo docker build -t tsmp/tsmp:1.0.1 -f $ROOT_DIR/docker/backend/Dockerfile $ROOT_DIR/tool-sharing
+sudo docker build -t tsmp/tsmp:1.0.3 -f $ROOT_DIR/docker/backend/Dockerfile $ROOT_DIR/tool-sharing
 
 echo "Building frontend..."
 

@@ -17,7 +17,7 @@ services:
 
   tsmp-api:
     container_name: tsmp-api
-    image: tsmp/tsmp:1.0.1  # Specify the local image with the tag you used
+    image: tsmp/tsmp:1.0.3  # Specify the local image with the tag you used
     ports:
       - 8080:8080
     networks:
