@@ -5,21 +5,27 @@ import { ActivateAccountComponent } from './pages/activate-account/activate-acco
 import { authGuard } from './services/guard/auth.guard';
 
 export const routes: Routes = [
-    {
-        path: 'login',
-        component: LoginComponent
-    },
-    {
-        path: 'register',
-        component: RegisterComponent
-    },
-    {
-        path: 'activate-account',
-        component: ActivateAccountComponent
-    },
-    {
-        path: 'tools',
-        loadChildren: () => import('./modules/tool/tool.module').then(module => module.ToolModule),
-        canActivate: [authGuard]
-    }
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+  },
+  {
+    path: 'activate-account',
+    component: ActivateAccountComponent,
+  },
+  {
+    path: '',
+    redirectTo: 'tools',
+    pathMatch: 'full',
+  },
+  {
+    path: 'tools',
+    loadChildren: () =>
+      import('./modules/tool/tool.module').then((module) => module.ToolModule),
+    canActivate: [authGuard],
+  },
 ];
