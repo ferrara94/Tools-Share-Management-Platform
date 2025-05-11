@@ -18,7 +18,7 @@ after use, and approve returns from others.
 
 #### 🐳 Docker Native Solution 
 This version runs all components (Spring, Angular, PostgreSql) inside **Docker containers**. You can run the entire application using **Docker Compose**.
-To run the Docker-based version, simply use the latest tagged [release](https://github.com/ferrara94/Tools-Share-Management-Platform/releases/tag/v1.0.1) and follow the containerized setup instructions.
+To run the Docker-based version, simply use the latest tagged [release](https://github.com/ferrara94/Tools-Share-Management-Platform/releases/tag/v1.0.2) and follow the containerized setup instructions.
 
 #### 💻 Development Mode Solution
 In this version, you run the Spring and Angular components separately in "**dev**" mode. The **Angular** app can be run using ng serve, and the Spring app can be executed through an IDE like IntelliJ.
