@@ -96,7 +96,7 @@ jobs:
         id: extract_version
         run: |
           cd tool-sharing
-          VERSION=$(../mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+          VERSION=$(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
           echo "VERSION=$VERSION"
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
