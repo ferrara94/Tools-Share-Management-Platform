@@ -10,4 +10,10 @@ class ToolSharingApiApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void anotherDummyTest() {
+		// Just a placeholder for now
+		assert true;
+	}
+
 }
