@@ -78,7 +78,7 @@ jobs:
 
   building-docker-image:
     runs-on: ubuntu-latest
-    name: Build backend
+    name: Build docker image
     needs: [ building-backend ]
     steps:
       - name: Checkout_code # root-level
