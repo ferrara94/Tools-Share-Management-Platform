@@ -1,7 +1,6 @@
 package com.ferrara.tool.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -26,15 +25,6 @@ import java.util.List;
 public class BeansConfigs {
 
     private final UserDetailsService userDetailsService;
-
-    @Value("${application.cors.origins}")
-    private String allowedOriginsString;
-
-    private List<String> getAllowedOriginsString(){
-        return Arrays.stream(allowedOriginsString.split(","))
-                .map(String::trim)
-                .toList();
-    }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -64,7 +54,10 @@ public class BeansConfigs {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(getAllowedOriginsString());
+        config.setAllowedOrigins(List.of(
+                "http://localhost:4200",
+                "http://localhost:6655"
+        ));
 
         config.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.ORIGIN,

@@ -21,7 +21,7 @@ FROM amazoncorretto:17
 
 # Arguments to pass the profile (default to 'dev') and version (default to '1.0.0')
 ARG PROFILE=docker
-ARG APP_VERSION=1.0.3
+ARG APP_VERSION=1.0.1
 
 # Set the working directory for the runtime container
 WORKDIR /app
@@ -41,10 +41,6 @@ EXPOSE 8080
 ENV DB_URL=jdbc:postgresql://postgres-sql-tsmp:5432/tool_share_management_platform
 ENV ACTIVE_PROFILE=${PROFILE}
 ENV JAR_VERSION=${APP_VERSION}
-
-ENV EMAIL_HOSTNAME=missing_host_name
-ENV EMAIL_USER_NAME=missing_user_name
-ENV EMAIL_PASSWORD=missing_password
 
 # Run the application with the appropriate environment variables (using exec form to avoid the warning)
 CMD ["sh", "-c", "java -jar -Dspring.profiles.active=$ACTIVE_PROFILE -Dspring.datasource.url=$DB_URL /app/tool-sharing-$JAR_VERSION-SNAPSHOT.jar"]
