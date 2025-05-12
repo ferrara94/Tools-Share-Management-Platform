@@ -14,7 +14,6 @@ after use, and approve returns from others.
 > ⚠️ Note:
 > The current stable versions of the application are available in the [**Releases section**](https://github.com/ferrara94/Tools-Share-Management-Platform/tags) (e.g., v1.0.0).
 > 
->❗The main branch is the same as the Dockerized version, which means it includes the latest version of the app configured for containerized deployment with Docker Compose.
 
 #### 🐳 Docker Native Solution 
 This version runs all components (Spring, Angular, PostgreSql) inside **Docker containers**. You can run the entire application using **Docker Compose**.
