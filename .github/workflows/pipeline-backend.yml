@@ -111,11 +111,12 @@ jobs:
           file: docker/backend/Dockerfile
           push: true #push to DockerHub
           platforms: linux/amd64 #runs-on ubuntu
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tsmp-api:${{ secrets.DOCKER_TOKEN }}/tsmp-api:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tsmp-api:${{ steps.extract_version.outputs.VERSION }},${{ secrets.DOCKERHUB_USERNAME }}/tsmp-api:latest
           build-args: |
             PROFILE=staging
             APP_VERSION=${{ steps.extract_version.outputs.VERSION }}
-            
+    
+    
 
     #  DEPLOYMENT TO CLOUD PLATFORM, REMOTE SERVER (VPS)
     #  deploy:
