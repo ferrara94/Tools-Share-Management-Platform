@@ -15,7 +15,7 @@ after use, and approve returns from others.
 > The current stable versions of the application are available in the [**Releases section**](https://github.com/ferrara94/Tools-Share-Management-Platform/tags) (e.g., v1.0.0).
 > 
 
-#### 🐳 Docker Native Solution 
+#### 🐳 Docker Compose Solution 
 This version runs all components (Spring, Angular, PostgreSql) inside **Docker containers**. You can run the entire application using **Docker Compose**.
 To run the Docker-based version, simply use the latest tagged [release](https://github.com/ferrara94/Tools-Share-Management-Platform/releases/tag/v1.0.2) and follow the containerized setup instructions.
 
