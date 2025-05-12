@@ -92,11 +92,14 @@ jobs:
           java-version: 17
           distribution: 'corretto'
 
-      - name: Extract project version
+      - name: Extract project version (without SNAPSHOT)
         id: extract_version
         run: |
           cd tool-sharing
-          VERSION=$(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+          RAW_VERSION=$(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+          VERSION=${RAW_VERSION/-SNAPSHOT/}
+          echo "Extracted raw version: $RAW_VERSION"
+          echo "Stripped SNAPSHOT version: $VERSION"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
       
 
