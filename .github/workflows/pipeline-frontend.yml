@@ -1,4 +1,4 @@
-name: TSMP_Freontend_UI_Pipeline
+name: TSMP_Frontend_UI_Pipeline
 
 on:
   push:
@@ -11,22 +11,23 @@ on:
       - 'docker-compose.yml'
       - .github/workflows/*-frontend.yml
 
-
 jobs:
   build-image:
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
     name: Build UI Docker image
     steps:
-      - name: Checkout_code # root-level
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Extract project version
         id: extract_version
         run: |
           cd tool-sharing-ui
-          apt-get install jq
-          echo "VERSION=$(jq -r '.version' package.json)" >> $GITHUB_OUTPUT
+          sudo apt-get update && sudo apt-get install -y jq
+          VERSION=$(jq -r '.version' package.json)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
@@ -35,13 +36,12 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Build and Push to DockerHub
-        uses: docker/build-push-action@v5 #building the image
+        uses: docker/build-push-action@v5
         with:
-          context: tool-sharing-ui #like the context in the Dockerfile
+          context: tool-sharing-ui
           file: docker/frontend/Dockerfile
-          push: true #push to DockerHub
-          platforms: linux/amd64 #runs-on ubuntu
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tsmp-ui:${{ secrets.DOCKER_TOKEN }}/tsmp-ui:latest
-
-    #  DEPLOYMENT TO CLOUD PLATFORM, REMOTE SERVER (VPS)
-    #  deploy:
+          push: true
+          platforms: linux/amd64
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/tsmp-ui:${{ steps.extract_version.outputs.version }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/tsmp-ui:latest
