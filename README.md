@@ -28,6 +28,20 @@ If you want to run the application **without building anything locally**, you ca
 📦 Images:
 - [fferrara8/tsmp-ui](https://hub.docker.com/r/fferrara8/tsmp-ui)
 - [fferrara8/tsmp-api](https://hub.docker.com/r/fferrara8/tsmp-api)
+
+🔄 Replace the relevant [section](https://github.com/ferrara94/Tools-Share-Management-Platform/blob/main/docker-compose.yml#L18-L36) in the docker-compose.yml with:
+
+```
+    tsmp-api:
+        container_name: tsmp-api
+        image: fferrara8/tsmp-api:1.0.3
+```
+```
+    tsmp-ui:
+        container_name: tsmp-ui
+        image: fferrara8/tsmp-ui:1.0.0
+```
+
 ---
 ## Features
 - 👤 User Registration & Authentication
