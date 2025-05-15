@@ -1,5 +1,5 @@
 name: TSMP_Backend_API_Pipeline
-
+#backend pipeline
 on:
   push:
     branches:
@@ -13,7 +13,7 @@ on:
 
 jobs:
   compile:
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
     name: Compile project
     steps:
       - name: Checkout_code # root-level
@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup JDK
-        uses: actions/setup-jdk@v4
+        uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: 'corretto'
@@ -34,7 +34,7 @@ jobs:
           
 
   unit-tests:
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
     name: Unit tests
     steps:
       - name: Checkout_code # root-level
@@ -43,7 +43,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup JDK
-        uses: actions/setup-jdk@v4
+        uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: 'corretto'
@@ -55,7 +55,7 @@ jobs:
           
 
   building-backend:
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
     name: Build backend
     needs: [compile, unit-tests]
     steps:
@@ -65,7 +65,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup JDK
-        uses: actions/setup-jdk@v4
+        uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: 'corretto'
@@ -77,9 +77,9 @@ jobs:
   
 
   building-docker-image:
-    runs-on: ubuntu
-    name: Build backend
-    needs: [building-backend]
+    runs-on: ubuntu-latest
+    name: Build docker image
+    needs: [ building-backend ]
     steps:
       - name: Checkout_code # root-level
         uses: actions/checkout@v4
@@ -87,35 +87,40 @@ jobs:
           fetch-depth: 0
 
       - name: Setup JDK
-        uses: actions/setup-jdk@v4
+        uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: 'corretto'
 
-      - name: Extract project version
+      - name: Extract project version (without SNAPSHOT)
         id: extract_version
         run: |
           cd tool-sharing
-          echo "VERSION=$(../mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+          RAW_VERSION=$(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+          VERSION=${RAW_VERSION/-SNAPSHOT/}
+          echo "Extracted raw version: $RAW_VERSION"
+          echo "Stripped SNAPSHOT version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+      
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and Push to DockerHub
-        uses: docker/build-push-action@v5 #building the image
+        uses: docker/build-push-action@v5
         with:
-          context: tool-sharing #like the context in the Dockerfile
+          context: tool-sharing
           file: docker/backend/Dockerfile
-          push: true #push to DockerHub
-          platforms: linux/amd64 #runs-on ubuntu
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tsmp-api:${{ secrets.DOCKER_TOKEN }}/tsmp-api:latest
+          push: true
+          platforms: linux/amd64
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tsmp-api:${{ steps.extract_version.outputs.version }},${{ secrets.DOCKERHUB_USERNAME }}/tsmp-api:latest
           build-args: |
             PROFILE=staging
-            APP_VERSION=${{ steps.extract_version.outputs.VERSION }}
-            
+            APP_VERSION=${{ steps.extract_version.outputs.version }}
+    
 
     #  DEPLOYMENT TO CLOUD PLATFORM, REMOTE SERVER (VPS)
     #  deploy:
