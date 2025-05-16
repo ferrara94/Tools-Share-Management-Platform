@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ToolRoutingModule } from './tool-routing.module';
@@ -10,6 +10,10 @@ import { ToolService } from '../../services/services/tool.service';
 @NgModule({
   declarations: [],
   imports: [CommonModule, ToolRoutingModule],
-  providers: [ToolService, TokenService, provideHttpClient(withInterceptors([httpTokenInterceptor]))],
+  providers: [
+    ToolService,
+    TokenService,
+    provideHttpClient(withInterceptors([httpTokenInterceptor])),
+  ],
 })
 export class ToolModule {}

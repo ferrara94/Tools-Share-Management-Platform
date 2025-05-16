@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { APP_INITIALIZER, ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -7,7 +7,11 @@ import {
   withEventReplay,
 } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { httpTokenInterceptor } from './services/interceptor/http-token.interceptor';
+import { KeycloakService } from './services/keycloak/keycloak.service';
+
+export function keyCloakFactory(keyCloakService: KeycloakService){
+  return () => keyCloakService.init();
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,5 +21,11 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       
     ),
+    {
+      provide: APP_INITIALIZER,
+      deps: [KeycloakService],
+      useFactory: keyCloakFactory,
+      multi: true
+    }
   ],
 };

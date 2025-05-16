@@ -1,7 +1,7 @@
 spring:
   profiles:
-    active: staging
-    #active: dev, docker
+    active: dev
+    #active: docker, staging
   servlet:
     multipart:
       max-file-size: 50MB
