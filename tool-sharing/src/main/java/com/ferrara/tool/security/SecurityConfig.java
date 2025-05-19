@@ -20,8 +20,8 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableMethodSecurity(securedEnabled = true) //role based authentication
 public class SecurityConfig {
 
-    private final AuthenticationProvider authenticationProvider;
-    private final JwtFilter jwtAuthFilter;
+    //private final AuthenticationProvider authenticationProvider;
+    //private final JwtFilter jwtAuthFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -46,11 +46,17 @@ public class SecurityConfig {
                                 ).permitAll()
                                 .anyRequest()
                                 .authenticated()
-                ).sessionManagement(
+                ).oauth2ResourceServer(auth ->
+                            auth.jwt(token -> token.jwtAuthenticationConverter(
+                                    new KeycloakJwtAuthenticationConverter()
+                            ))
+                        );
+
+                /*.sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); //our own filter
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); //our own filter*/
         return http.build();
     }
 
