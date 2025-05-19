@@ -3,6 +3,7 @@ package com.ferrara.tool.history;
 import com.ferrara.tool.tool.Tool;
 import com.ferrara.tool.user.User;
 import com.ferrara.tool.utils.common.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -26,9 +27,12 @@ public class ToolTransactionHistory extends BaseEntity {
         MANY-TO-MANY RELATIONSHIP
     */
 
-    @ManyToOne
-    @JoinColumn(name = "user_id" )
-    private User userId;
+    //@ManyToOne
+    //@JoinColumn(name = "user_id" )
+    //private User userId;
+
+    @Column(name = "user_id")
+    private String userId;
 
     @ManyToOne
     @JoinColumn(name = "tool_id" )

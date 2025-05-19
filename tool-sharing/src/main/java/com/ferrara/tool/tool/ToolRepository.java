@@ -17,9 +17,9 @@ public interface ToolRepository extends JpaRepository<Tool, Integer>, JpaSpecifi
             FROM Tool tool
             WHERE tool.archived = false
             AND tool.available = true
-            AND tool.owner.id != :userId
+            AND tool.createdBy != :userId
           """)
-    Page<Tool> findAllAvailableTools(Pageable pageable, Integer userId);
+    Page<Tool> findAllAvailableTools(Pageable pageable, String userId);
 
     Optional<Tool> findByName(String name);
 }

@@ -30,9 +30,9 @@ public class Tool extends BaseEntity {
     private boolean available;
     private boolean archived;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private User owner; // 1 tool has 1 owner - this field will be mapped by the User class
+//    @ManyToOne
+//    @JoinColumn(name = "owner_id")
+//    private User owner; // 1 tool has 1 owner - this field will be mapped by the User class
 
     @OneToMany(mappedBy = "tool")
     private List<Feedback> feedbacks;

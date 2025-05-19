@@ -31,9 +31,9 @@ public class ToolService {
 
 
     public Integer save(ToolRequest request, Authentication connectedUser) {
-        User user = (User) connectedUser.getPrincipal();
+        //User user = (User) connectedUser.getPrincipal();
         Tool tool = toolMapper.toTool(request);
-        tool.setOwner(user);
+        //tool.setOwner(user);
         return repository.save(tool).getId();
     }
 
@@ -50,9 +50,9 @@ public class ToolService {
     }
 
     public PageResponse<ToolResponse> findAllTools(int page, int size, Authentication connectedUser) {
-        User user = (User) connectedUser.getPrincipal();
+        //User user = (User) connectedUser.getPrincipal();
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-        Page<Tool> tools = repository.findAllAvailableTools(pageable, user.getId());
+        Page<Tool> tools = repository.findAllAvailableTools(pageable, connectedUser.getName());
         List<ToolResponse> response = tools.stream()
                 .map(toolMapper::toToolResponse)
                 .toList();
@@ -69,9 +69,9 @@ public class ToolService {
     }
 
     public PageResponse<ToolResponse> findAllToolsByOwner(int page, int size, Authentication connectedUser) {
-        User user = (User) connectedUser.getPrincipal();
+        //User user = (User) connectedUser.getPrincipal();
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-        Page<Tool> tools = repository.findAll(ToolSpecification.withOwnerId(user.getId()), pageable);
+        Page<Tool> tools = repository.findAll(ToolSpecification.withOwnerId(connectedUser.getName()), pageable);
         List<ToolResponse> response = tools.stream()
                 .map(toolMapper::toToolResponse)
                 .toList();
@@ -88,10 +88,10 @@ public class ToolService {
     }
 
     public PageResponse<BorrowedToolResponse> findAllBorrowedTools(int page, int size, Authentication connectedUser) {
-        User user = (User) connectedUser.getPrincipal();
+        //User user = (User) connectedUser.getPrincipal();
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         //we have the relationship between Tool and ToolTransactionHistory
-        Page<ToolTransactionHistory> borrowedTools = transactionHistoryRepository.findAllBorrowedTools(pageable, user.getId());
+        Page<ToolTransactionHistory> borrowedTools = transactionHistoryRepository.findAllBorrowedTools(pageable, connectedUser.getName());
         List<BorrowedToolResponse> response = borrowedTools.stream()
                 .map(toolMapper::toBorrowedToolResponse)
                 .toList();
@@ -112,9 +112,12 @@ public class ToolService {
                 .orElseThrow(() -> new EntityNotFoundException("NO TOOL FOUND WITH ID: " + toolId));
 
         //only owner of the tool, can update the tool
-        User user = (User) connectedUser.getPrincipal();
-        if (!Objects.equals(tool.getOwner().getId(), user.getId())) {
-            throw new OperationNotPermittedException("YOU CANNOT UPDATE TOOL AVAILABLE STATUS");
+        //User user = (User) connectedUser.getPrincipal();
+//        if (!Objects.equals(tool.getOwner().getId(), user.getId())) {
+//            throw new OperationNotPermittedException("YOU CANNOT UPDATE TOOL AVAILABLE STATUS");
+//        }
+        if (!Objects.equals(tool.getCreatedBy(), connectedUser.getName())) {
+           throw new OperationNotPermittedException("YOU CANNOT UPDATE TOOL AVAILABLE STATUS");
         }
         tool.setAvailable(!tool.isAvailable());
         repository.save(tool);
@@ -126,8 +129,9 @@ public class ToolService {
                 .orElseThrow(() -> new EntityNotFoundException("NO TOOL FOUND WITH ID: " + toolId));
 
         //only owner of the tool, can update the tool
-        User user = (User) connectedUser.getPrincipal();
-        if (!Objects.equals(tool.getOwner().getId(), user.getId())) {
+        //User user = (User) connectedUser.getPrincipal();
+        //if (!Objects.equals(tool.getOwner().getId(), user.getId())) {
+        if (!Objects.equals(tool.getCreatedBy(), connectedUser.getName())) {
             throw new OperationNotPermittedException("YOU CANNOT UPDATE TOOL ARCHIVED STATUS");
         }
         tool.setArchived(!tool.isArchived());
@@ -142,20 +146,21 @@ public class ToolService {
         if (tool.isArchived() || !tool.isAvailable()) {
             throw new OperationNotPermittedException("THE REQUESTED TOOL CANNOT BE BORROWED SINCE IT IS NOT AVAILABLE OR IS ARCHIVED");
         }
-        User user = (User) connectedUser.getPrincipal();
+        //User user = (User) connectedUser.getPrincipal();
 
         //avoid the owner borrowing its tool
-        if (Objects.equals(tool.getOwner().getId(), user.getId())) {
+        //if (Objects.equals(tool.getOwner().getId(), user.getId())) {
+        if (Objects.equals(tool.getCreatedBy(), connectedUser.getName())) {
             throw new OperationNotPermittedException("YOU CANNOT BORROW YOUR OWN TOOL ");
         }
 
-        final boolean isAlreadyBorrowed = transactionHistoryRepository.isAlreadyBorrowedByUser(toolId, user.getId());
+        final boolean isAlreadyBorrowed = transactionHistoryRepository.isAlreadyBorrowedByUser(toolId, connectedUser.getName());
         if (isAlreadyBorrowed) {
             throw new OperationNotPermittedException("THE TOOL YOU REQUESTED IS ALREADY BORROWED");
         }
 
         ToolTransactionHistory toolTransactionHistory = ToolTransactionHistory.builder()
-                .userId(user)
+                .userId(connectedUser.getName())
                 .toolId(tool)
                 .returned(false)
                 .returnApproved(false)
@@ -170,12 +175,12 @@ public class ToolService {
         if (tool.isArchived() || !tool.isAvailable()) {
             throw new OperationNotPermittedException("THE REQUESTED TOOL CANNOT BE RETURNED SINCE IT IS NOT AVAILABLE OR IS ARCHIVED");
         }
-        User user = (User) connectedUser.getPrincipal();
+        //User user = (User) connectedUser.getPrincipal();
         //avoid the owner returning its tool
-        if (Objects.equals(tool.getOwner().getId(), user.getId())) {
+        if (Objects.equals(tool.getCreatedBy(), connectedUser.getName())) {
             throw new OperationNotPermittedException("YOU CANNOT RETURN YOUR OWN TOOL SINCE YOU DIDN'T BORROW IT ");
         }
-        ToolTransactionHistory toolTransactionHistory = transactionHistoryRepository.findByToolIdAndUserId(toolId, user.getId())
+        ToolTransactionHistory toolTransactionHistory = transactionHistoryRepository.findByToolIdAndUserId(toolId, connectedUser.getName())
                 .orElseThrow(() -> new OperationNotPermittedException("YOU DIDN'T BORROW THIS TOOL"));
         toolTransactionHistory.setReturned(true);
         return transactionHistoryRepository.save(toolTransactionHistory).getId();
@@ -187,14 +192,14 @@ public class ToolService {
         if (tool.isArchived() || !tool.isAvailable()) {
             throw new OperationNotPermittedException("THE REQUESTED TOOL CANNOT BE BORROWED SINCE IT IS NOT AVAILABLE OR IS ARCHIVED");
         }
-        User user = (User) connectedUser.getPrincipal();
+        //User user = (User) connectedUser.getPrincipal();
         //avoid the owner approving the return of tool which are not owned
-        if (!Objects.equals(tool.getOwner().getId(), user.getId())) {
+        if (!Objects.equals(tool.getCreatedBy(), connectedUser.getName())) {
             throw new OperationNotPermittedException("YOU CANNOT APPROVE THE RETURN OF A TOOL YOU DON'T OWN ");
         }
 
         //CHECK IF THE TOOL RETURNED IS OWNED BY THE USER (SO BY THE OWNER)
-        ToolTransactionHistory toolTransactionHistory = transactionHistoryRepository.findByToolIdAndOwnerId(toolId, user.getId())
+        ToolTransactionHistory toolTransactionHistory = transactionHistoryRepository.findByToolIdAndOwnerId(toolId, connectedUser.getName())
                 .orElseThrow(() -> new OperationNotPermittedException("YOU CANNOT APPROVE THIS TOOL RETURN"));
 
         toolTransactionHistory.setReturnApproved(true);
@@ -205,17 +210,17 @@ public class ToolService {
     public void uploadToolPicture(MultipartFile file, Authentication connectedUser, Integer toolId) {
         Tool tool = repository.findById(toolId)
                 .orElseThrow(() -> new EntityNotFoundException("NO TOOL FOUND WITH THE ID: " + toolId));
-        User user = (User) connectedUser.getPrincipal();
+        //User user = (User) connectedUser.getPrincipal();
 
-        var toolPicture = fileStorageService.saveFile(file, user.getId(), tool.getName());
+        var toolPicture = fileStorageService.saveFile(file, connectedUser.getName(), tool.getName());
         tool.setToolPicture(tool.getName().replace(" ", "_"));
         repository.save(tool);
     }
 
     public PageResponse<BorrowedToolResponse> findAllReturnedTools(int page, int size, Authentication connectedUser) {
-        User user = (User) connectedUser.getPrincipal();
+        //User user = (User) connectedUser.getPrincipal();
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-        Page<ToolTransactionHistory> allBorrowedTools = transactionHistoryRepository.findAllReturnedTools(pageable, user.getId());
+        Page<ToolTransactionHistory> allBorrowedTools = transactionHistoryRepository.findAllReturnedTools(pageable, connectedUser.getName());
         List<BorrowedToolResponse> toolsResponse = allBorrowedTools.stream()
                 .map(toolMapper::toBorrowedToolResponse)
                 .toList();

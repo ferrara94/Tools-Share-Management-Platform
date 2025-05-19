@@ -29,7 +29,7 @@ public class BaseEntity {
 
     @CreatedBy
     @Column(nullable = false, updatable = false)
-    private Integer createdBy;
+    private String createdBy;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -37,7 +37,7 @@ public class BaseEntity {
 
     @LastModifiedBy
     @Column(insertable = false)
-    private Integer lastModifiedBy;
+    private String lastModifiedBy;
 
     @LastModifiedDate
     @Column(insertable = false)

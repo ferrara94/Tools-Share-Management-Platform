@@ -28,7 +28,7 @@ public class ToolMapper {
                 .available(tool.isAvailable())
                 .archived(tool.isArchived())
                 .rate(tool.getRate())
-                .owner(tool.getOwner().fullName())
+                //.owner(tool.getOwner().fullName())
                 .picture(FileUtils.readFileFromLocation(tool.getToolPicture()))
                 .build();
     }

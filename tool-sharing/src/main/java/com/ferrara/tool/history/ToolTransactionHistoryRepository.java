@@ -15,44 +15,44 @@ public interface ToolTransactionHistoryRepository extends JpaRepository<ToolTran
     @Query("""
               SELECT history
               FROM ToolTransactionHistory history
-              WHERE history.userId.id = :userId
+              WHERE history.userId = :userId
             """)
-    Page<ToolTransactionHistory> findAllBorrowedTools(Pageable pageable, @Param("userId") Integer userId);
+    Page<ToolTransactionHistory> findAllBorrowedTools(Pageable pageable, @Param("userId") String userId);
 
 
     @Query("""
             SELECT (COUNT(*) > 0) AS isBorrowed
             FROM ToolTransactionHistory history
-            WHERE history.userId.id = :userId
+            WHERE history.userId = :userId
             AND history.toolId.id = :toolId
             AND history.returnApproved = false
             """)
-    boolean isAlreadyBorrowedByUser(@Param("toolId") Integer toolId, @Param("userId") Integer userId);
+    boolean isAlreadyBorrowedByUser(@Param("toolId") Integer toolId, @Param("userId") String userId);
 
     @Query("""
             SELECT history
             FROM ToolTransactionHistory history
-            WHERE history.userId.id = :userId
+            WHERE history.userId = :userId
             AND history.toolId.id = :toolId
             AND history.returned = false
             AND history.returnApproved = false
             """)
-    Optional<ToolTransactionHistory> findByToolIdAndUserId(@Param("toolId") Integer toolId, @Param("userId") Integer userId);
+    Optional<ToolTransactionHistory> findByToolIdAndUserId(@Param("toolId") Integer toolId, @Param("userId") String userId);
 
     @Query("""
             SELECT history
             FROM ToolTransactionHistory history
-            WHERE history.toolId.owner.id = :userId
+            WHERE history.toolId.createdBy = :userId
             AND history.toolId.id = :toolId
             AND history.returned = true
             AND history.returnApproved = false
             """)
-    Optional<ToolTransactionHistory> findByToolIdAndOwnerId(@Param("toolId") Integer toolId, @Param("userId") Integer userId);
+    Optional<ToolTransactionHistory> findByToolIdAndOwnerId(@Param("toolId") Integer toolId, @Param("userId") String userId);
 
     @Query("""
             SELECT history
             FROM ToolTransactionHistory history
             WHERE history.toolId.createdBy = :userId
             """)
-    Page<ToolTransactionHistory> findAllReturnedTools(Pageable pageable, @Param("userId") Integer userId);
+    Page<ToolTransactionHistory> findAllReturnedTools(Pageable pageable, @Param("userId") String userId);
 }

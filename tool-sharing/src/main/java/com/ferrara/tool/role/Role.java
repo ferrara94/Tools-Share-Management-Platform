@@ -16,8 +16,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@EntityListeners(AuditingEntityListener.class) //remember to have @EnableJpaAuditing in the main class
+//@Entity
+//@EntityListeners(AuditingEntityListener.class) //remember to have @EnableJpaAuditing in the main class
 public class Role {
 
     @Id

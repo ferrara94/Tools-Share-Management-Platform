@@ -31,8 +31,8 @@ public class FeedbackService {
         if (tool.isArchived() || !tool.isAvailable()) {
             throw new OperationNotPermittedException("YOU CANNOT GIVE FEEDBACK TO A NOT AVAILABLE/ARCHIVED TOOL");
         }
-        User user = (User) connectedUser.getPrincipal();
-        if (Objects.equals(tool.getOwner().getId(), user.getId())) {
+        //User user = (User) connectedUser.getPrincipal();
+        if (Objects.equals(tool.getCreatedBy(), connectedUser.getName())) {
             throw new OperationNotPermittedException("YOU CANNOT AND SHOULD NOT GIVE A FEEDBACK TO YOUR OWN TOOL ");
         }
         Feedback feedback = feedbackMapper.toFeedback(request);
