@@ -25,6 +25,10 @@ export class MenuComponent implements OnInit {
     this.keycloakService.logout();
   }
 
+  async accountManagement() {
+    this.keycloakService.accountManagement();
+  }
+
   /* 
     logout(){
       localStorage.removeItem('token');

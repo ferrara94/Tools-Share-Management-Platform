@@ -24,7 +24,11 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="'my-tools'" routerLinkActive="active">
+          <a
+            class="nav-link"
+            [routerLink]="'my-tools'"
+            routerLinkActive="active"
+          >
             <i class="fas fa-screwdriver-wrench"></i> My Tools
           </a>
         </li>
@@ -34,12 +38,20 @@
           </a>
         </li> -->
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="'my-returned-tools'" routerLinkActive="active">
+          <a
+            class="nav-link"
+            [routerLink]="'my-returned-tools'"
+            routerLinkActive="active"
+          >
             <i class="fa-solid fa-truck-fast"></i> My Returned Tools
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="'my-borrowed-tools'" routerLinkActive="active">
+          <a
+            class="nav-link"
+            [routerLink]="'my-borrowed-tools'"
+            routerLinkActive="active"
+          >
             <i class="fas fa-list-check"></i> Borrowed Tools
           </a>
         </li>
@@ -55,6 +67,14 @@
           <i class="fas fa-door-open"></i>
         </button>
       </form>
+      <button (click)="accountManagement()">
+          <img
+            src="assets/icons/account.svg"
+            alt="account icon"
+            width="30"
+            height="30"
+          />
+        </button>
     </div>
   </div>
 </nav>
