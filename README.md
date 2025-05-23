@@ -11,8 +11,11 @@ after use, and approve returns from others.
 ----
 ## 📝 Instructions
 
-> ⚠️ Note:
-> The current stable versions of the application are available in the [**Releases section**](https://github.com/ferrara94/Tools-Share-Management-Platform/tags) (e.g., v1.0.0).
+### 🚀 Running the Project Locally
+
+1. Run PostgreSQL via Docker
+2. Run the Spring backend with the dev profile
+3. Run the E2E tests with Playwright in UI mode
 
 ---
 ## Features
