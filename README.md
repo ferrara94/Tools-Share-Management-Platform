@@ -15,7 +15,7 @@ after use, and approve returns from others.
 
 1. Run PostgreSQL via Docker
 2. Run the Spring backend with the dev profile
-3. Run the E2E tests with Playwright in UI mode
+3. Run the E2E tests with Playwright in UI mode `playwright test --ui`
 
 ---
 ## Features
