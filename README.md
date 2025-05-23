@@ -41,6 +41,15 @@ If you want to run the application **without building anything locally**, you ca
         container_name: tsmp-ui
         image: fferrara8/tsmp-ui:1.0.0
 ```
+---
+
+## 🔀 Integration Branches
+
+To experiment with specific features without affecting the stability of the `main` branch, separate branches have been created. Each one includes a distinct integration, allowing isolated development and testing of that functionality:
+
+
+- [**feature/keycloak-integration**](https://github.com/ferrara94/Tools-Share-Management-Platform/tree/feature/keycloak-integration) 🔐 – Adds `OAuth2` and `Keycloak-based` authentication and authorization.
+- [**tests/playwright-integration**](https://github.com/ferrara94/Tools-Share-Management-Platform/tree/tests/playwright-integration) 🧪 – Adds end-to-end testing using `Playwright`.
 
 ---
 ## Features
