@@ -1,5 +1,4 @@
 import { expect } from '@playwright/test'
-import { LoginForm } from '../page-object/login-form';
 import { test } from '../fixture/login-fixture';
 
 test.describe('Login Function', () => {
@@ -18,12 +17,17 @@ test.describe('Login Function', () => {
 
     test('should fill in the form with bad credentials', async({page, loginForm}) => {
 
+        const email: string = 'john@gmail.com';
+        const password: string = 'password';
+
         await page.goto('');
 
         await expect(page.locator('[data-testid=errorMessageArea]')).not.toBeVisible();
 
-        await loginForm.setEmailAddress('john@gmail.com');
-        await loginForm.setPassword('password');
+        await loginForm.fillInTheForm(email,password);
+
+        await loginForm.assertEmailValue(email);
+        await loginForm.assertPasswordValue(password);
 
         await page.getByTestId('btn-login').click();
 

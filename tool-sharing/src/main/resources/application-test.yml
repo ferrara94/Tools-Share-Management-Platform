@@ -1,0 +1,44 @@
+#it inherits configuration from application.yml
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  h2:
+    console:
+      path: /h2-console
+      settings.trace: false
+      enabled: true
+      settings.web-allow-others: false
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+  mail:
+    host: localhost
+    port: 1025
+    username: felix
+    password: password
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+        auth: true
+        starttls:
+          enabled: true
+        connectiontimeout: 5000
+        timeout: 3000
+        writetimeout: 5000
+
+#own information/properties
+application:
+  file:
+    upload:
+      pictures-output-path: ./tool-sharing-ui/src #directory in the root folder (angular project)
+  security:
+    jwt:
+      secret-key: 9741f747c3dc3985f70c26446f371db4f2766663fa19d045bbecb1456494f6a0
+      expiration: 8640000
+  mailing:
+    frontend:
+      activation-url: http://localhost:4200/activate-account

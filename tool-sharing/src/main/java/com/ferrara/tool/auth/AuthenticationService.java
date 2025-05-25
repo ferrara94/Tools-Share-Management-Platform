@@ -65,7 +65,7 @@ public class AuthenticationService {
                 .build();
 
         userRepository.save(user);
-        sendValidationEmail(user);
+        //sendValidationEmail(user);
 
     }
 
