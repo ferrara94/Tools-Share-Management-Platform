@@ -13,9 +13,8 @@ after use, and approve returns from others.
 
 ### 🚀 Running the Project Locally
 
-1. Spring backend runs with the test profile
-2. An in-memory database will be used for tests
-3. Run the E2E tests with Playwright in UI mode `playwright test --ui`
+1. Run the backend with IntelliJ (or others)
+2. Run the E2E tests with Playwright in UI mode `playwright test --ui`
 
 ---
 ## Features
