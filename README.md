@@ -13,8 +13,8 @@ after use, and approve returns from others.
 
 ### 🚀 Running the Project Locally
 
-1. Run PostgreSQL via Docker
-2. Run the Spring backend with the dev profile
+1. Spring backend runs with the test profile
+2. An in-memory database will be used for tests
 3. Run the E2E tests with Playwright in UI mode `playwright test --ui`
 
 ---
