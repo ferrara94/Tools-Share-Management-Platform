@@ -41,6 +41,7 @@ after use, and approve returns from others.
 - Component-Based Architecture
 - Authentication Guard
 - Bootstrap
+- Playwright 
 
 
 
