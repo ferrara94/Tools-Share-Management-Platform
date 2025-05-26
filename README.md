@@ -18,6 +18,7 @@
 - Spring Data JPA
 - Spring Validation
 - Docker
+- Keycloak
 
 ### Frontend
 - Angular
