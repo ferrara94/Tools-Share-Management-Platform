@@ -18,12 +18,15 @@ after use, and approve returns from others.
 
 ---
 ## Features
-- 👤 User Registration & Authentication
-- 🧰 Tool Management
-- 🔗 Tool Sharing
-- 🔄 Tool Borrowing
-- 📥 Tool Returning
-- ✅ Tool Return Approval
+
+###  🎭 End-to-End Testing 
+This project includes **Playwright** for end-to-end testing of the Angular application.
+
+- ✅ **Initial Setup with Page Object Model**: Introduced Playwright using the classic `Page Object Model (POM)` to structure and reuse selectors and actions.
+- 🎬 **Screenplay Pattern**: Refactored the test architecture using the `Screenplay pattern`, modeling interactions through actors and tasks.
+- 📸 **Visual Regression Testing**: Added `screenshot-based` tests to catch unexpected UI changes and enhance visual coverage.
+
+Playwright configuration and test files are located in the `e2e/` directory.
 
 ---
 ## Technologies Used
