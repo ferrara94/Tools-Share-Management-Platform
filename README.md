@@ -8,8 +8,9 @@ This project includes **Playwright** for end-to-end testing of the Angular appli
 - ✅ **Initial Setup with Page Object Model**: Introduced Playwright using the classic `Page Object Model (POM)` to structure and reuse selectors and actions.
 - 🎬 **Screenplay Pattern**: Refactored the test architecture using the `Screenplay pattern`, modeling interactions through actors and tasks.
 - 📸 **Visual Regression Testing**: Added `screenshot-based` tests to catch unexpected UI changes and enhance visual coverage.
+- 
 
-Playwright configuration and test files are located in the `e2e/` directory.
+Playwright configuration and test files are located in the [`e2e/`](https://github.com/ferrara94/Tools-Share-Management-Platform/tree/tests/playwright-integration/tool-sharing-ui/e2e) directory.
 
 ---
 
