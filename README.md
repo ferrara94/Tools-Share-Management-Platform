@@ -1,30 +1,14 @@
-# 🔧 Tools-Share-Management-Platform
-## Overview
-ToolShare is a full-stack application that enables users to manage their tools and engage with a community of
-borrowers and lenders.
-The platform allows users to list their tools, update and archive listings, borrow available tools, return them 
-after use, and approve returns from others.
+# 🔧 Tools-Share-Management-Platform ~ Keycloak Integration
+---
 
-**Do you need a tool just once?** 
-💡 **Borrow it!**
+## Keycloak 
 
-----
-## 📝 Instructions
-
-> ⚠️ Note:
-> The current stable versions of the application are available in the [**Releases section**](https://github.com/ferrara94/Tools-Share-Management-Platform/tags) (e.g., v1.0.0).
-
+- 🔐 **Keycloak Integration**: Migrated from a JWT-based system to an `OAuth 2.0` flow using Keycloak as the `Authorization Server`.
+- 🧩 **Angular Frontend**: Created a dedicated Keycloak service and updated route guards to handle OAuth2 token-based session logic.
+- ⚙️ **Spring Boot Backend**: Configured Spring Security to act as an `OAuth 2.0 Resource Server`, accepting JWTs issued by Keycloak and mapping roles using a custom KeycloakJwtAuthenticationConverter.
 
 ---
-## Features
-- 👤 User Registration & Authentication
-- 🧰 Tool Management
-- 🔗 Tool Sharing
-- 🔄 Tool Borrowing
-- 📥 Tool Returning
-- ✅ Tool Return Approval
 
----
 ## Technologies Used
 
 ### Backend
