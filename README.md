@@ -49,7 +49,7 @@ To experiment with specific features without affecting the stability of the `mai
 
 
 - [**feature/keycloak-integration**](https://github.com/ferrara94/Tools-Share-Management-Platform/tree/feature/keycloak-integration) 🔐 – Adds `OAuth2` and `Keycloak-based` authentication and authorization.
-- [**tests/playwright-integration**](https://github.com/ferrara94/Tools-Share-Management-Platform/tree/tests/playwright-integration) 🎭 – Adds end-to-end testing using `Playwright`.
+- [**tests/playwright-integration**](https://github.com/ferrara94/Tools-Share-Management-Platform/tree/tests/playwright-integration) 🎭 – Adds end-to-end testing using **`Playwright`**.
 
 ---
 ## Features
